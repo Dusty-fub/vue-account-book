@@ -1,17 +1,16 @@
 <template>
-  <div class="home">
-    <H3>this is Statistics page</H3>
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="wrapper">
+    <Layout>statistics</Layout>
   </div>
 </template>
 
 <script>
-import HelloWorld from "@/components/HelloWorld.vue";
+import Layout from "@/components/Layout.vue";
 
 export default {
   name: "Statistics",
   components: {
-    HelloWorld,
+    Layout,
   },
 };
 </script>

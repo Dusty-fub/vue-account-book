@@ -1,17 +1,21 @@
 <template>
-  <div class="home">
-    money
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="wrapper">
+    <Layout>money</Layout>
   </div>
 </template>
 
 <script>
-import HelloWorld from "@/components/HelloWorld.vue";
+import Layout from "@/components/Layout.vue";
 
 export default {
   name: "Money",
   components: {
-    HelloWorld,
+    Layout,
   },
 };
 </script>
+
+<style lang='scss' scoped>
+@import '~@/assets/css/money.scss';
+
+</style>

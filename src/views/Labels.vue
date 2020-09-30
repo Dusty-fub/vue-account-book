@@ -1,18 +1,16 @@
 <template>
-  <div class="home">
-    <h3>this is labels page</h3>
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-    <Nav />
+  <div class="wrapper">
+    <Layout>labels</Layout>
   </div>
 </template>
 
 <script>
-import HelloWorld from "@/components/HelloWorld.vue";
+import Layout from "@/components/Layout.vue";
 
 export default {
   name: "Labels",
   components: {
-    HelloWorld,
+    Layout,
   },
 };
 </script>

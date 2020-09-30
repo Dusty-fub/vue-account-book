@@ -1,6 +1,8 @@
 <template>
   <div class="nav">
-    <h2>nav</h2>
+    <router-link to="/money">记账</router-link>
+    <router-link to="/labels">标签</router-link>
+    <router-link to="/statistics">统计</router-link>
   </div>
 </template>
 
@@ -9,4 +11,6 @@ export default {};
 </script>
 
 <style scoped lang="scss">
+@import '~@/assets/css/nav.scss';
+
 </style>
