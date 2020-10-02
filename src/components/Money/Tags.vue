@@ -30,7 +30,7 @@ export default class Tags extends Vue {
     } else {
       this.selectedTags.splice(index, 1);
     }
-    console.log(index);
+    this.$emit("update:value", this.selectedTags);
   }
   createTag() {
     const name = window.prompt("请输入标签名") || "";
