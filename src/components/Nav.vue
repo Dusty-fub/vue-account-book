@@ -1,18 +1,18 @@
 <template>
-  <div class="nav">
-    <router-link to="/money">
+  <nav class="nav">
+    <router-link to="/money" active-class="selected">
       <Icon name="#money" />
-      记账
+      <div>记账</div>
     </router-link>
-    <router-link to="/labels">
+    <router-link to="/labels" active-class="selected">
       <Icon name="#label" />
-      标签
+      <div>标签</div>
     </router-link>
-    <router-link to="/statistics">
+    <router-link to="/statistics" active-class="selected">
       <Icon name="#statistics" />
-      统计
+      <div>统计</div>
     </router-link>
-  </div>
+  </nav>
 </template>
 
 <script lang="ts" scoped>

@@ -1,0 +1,38 @@
+@import '~@/assets/css/reset.scss';
+@import '~@/assets/css/helper.scss';
+.tags {
+  font-size : 14px;
+  padding : 16px 0;
+  flex : 1;
+  display : flex;
+  flex-direction : column;
+  justify-content : flex-end;
+  > .current {
+    display : flex;
+    li {
+      $bg : #D9D9D9;
+      background-color : #D9D9D9;
+      $h : 24px;
+      height : $h;
+      line-height : $h;
+      padding : 0 12px;
+      border-radius : ($h/2);
+      margin-right : 12px;
+      font-size : 16px;
+      &.selected {
+        color : $color-red;
+        border : 1px dashed hotpink;
+      }
+    }
+  }
+
+  > .new {
+    text-align : left;
+    padding-top : 16px;
+    button {
+      color : #999999;
+      border-bottom : 1px solid;
+      padding : 0 4px;
+    }
+  }
+}

@@ -1,0 +1,28 @@
+* {
+  margin : 0;
+  padding : 0;
+  box-sizing : border-box;
+}
+
+a {
+  text-decoration : none;
+  color : #333333;
+}
+
+ul, ol {
+  list-style : none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight : normal;
+}
+
+button, input {
+  background : transparent;
+  border : none;
+  font : inherit;
+}
+
+:focus {
+  outline : none;
+}
