@@ -15,9 +15,9 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/Money.vue"),
   },
   {
-    path: "/labels",
-    name: "Labels",
-    component: () => import("../views/Labels.vue"),
+    path: "/statements",
+    name: "Statements",
+    component: () => import("../views/Statements.vue"),
   },
   {
     path: "/statistics",

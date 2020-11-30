@@ -3,7 +3,7 @@
     <Layout>
       <Types
         :type="record.type"
-        @update:type="updateType"
+        @update:type="onUpdateType"
       />
       <div class="output">{{ output }}</div>
       <Tags
@@ -39,9 +39,8 @@ window.localStorage.setItem("version", "0.0.1");
   components: { Layout, Notes, NumberPad, Types, Tags, RecordDate },
 })
 export default class Money extends Vue {
-  output: string = "0";
   name = "Money";
-
+  output: string = "0";
   costTags = [
     "食品酒水",
     "衣服饰品",
@@ -56,18 +55,29 @@ export default class Money extends Vue {
   ];
   incomeTags = ["职业收入", "礼金收入", "中奖收入", "其他收入"];
   tags = this.costTags;
-
-  //按理来说这个 分类也应该从localstorage获取
-  //或者  写死的就写在这；用户自己添加的放到local storage中
-
+  createDate: string = "";
   record: RecordItem = {
     tag: "",
     notes: "",
     type: "-",
     amount: 0,
   };
+  recordList: RecordItem[] = this.$store.state.recordList;
 
-  updateType(value: string) {
+  onUpdateDate(...rest: Number[]) {
+    this.createDate = `${rest[0]}-${rest[1]}-${rest[2]}`;
+  }
+  onUpdateTags(value: string) {
+    this.record.tag = value;
+  }
+  onUpdateNotes(value: string) {
+    this.record.notes = value;
+  }
+  onUpdateAmount(value: string) {
+    this.output = value;
+    this.record.amount = Number(value);
+  }
+  onUpdateType(value: string) {
     this.record.type = value;
     if (value === "-") {
       this.tags = this.costTags;
@@ -76,39 +86,9 @@ export default class Money extends Vue {
     }
   }
 
-  createDate: string = "";
-
-  onUpdateDate(...rest: Number[]) {
-    this.createDate = `${rest[0]}-${rest[1]}-${rest[2]}`;
-  }
-
-  recordList: RecordItem[] = [];
-  created() {
-    this.$store.dispatch("fetch").then(
-      (data) => {
-        this.recordList = data;
-      },
-      (err) => {
-        throw new Error(err);
-      }
-    );
-  }
-
-  onUpdateTags(value: string) {
-    this.record.tag = value;
-  }
-  onUpdateNotes(value: string) {
-    this.record.notes = value;
-  }
-
-  onUpdateAmount(value: string) {
-    this.output = value;
-    this.record.amount = Number(value);
-  }
-
   saveRecord() {
     const recordCopy: RecordItem = clone(this.record);
-    recordCopy.createdAt = this.createDate;
+    recordCopy.createTime = this.createDate;
     this.recordList.push(recordCopy);
   }
 

@@ -19,19 +19,26 @@ export default new Vuex.Store({
     createRecord(state, record) {
       // const record
     },
+    updateRecordList(state, data) {
+      state.recordList = data;
+    },
   },
   actions: {
-    fetch() {
+    fetch(context) {
       let fetchResult = window.localStorage.getItem(
         this.state.localStorageKeyName
       );
       if (fetchResult === "undefined") {
         fetchResult = "[]";
       }
-      return JSON.parse(fetchResult || "[]") as RecordItem[];
+      context.commit(
+        "updateRecordList",
+        JSON.parse(fetchResult || "[]") as RecordItem[]
+      );
     },
-    saveRecordList(state, data: RecordItem[]) {
+    saveRecordList(context, data: RecordItem[]) {
       window.localStorage.setItem("recordList", JSON.stringify(data));
+      context.dispatch("fetch");
     },
   },
   modules: {},

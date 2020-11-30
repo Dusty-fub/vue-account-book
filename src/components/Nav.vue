@@ -1,14 +1,23 @@
 <template>
   <nav class="nav">
-    <router-link to="/labels" active-class="selected">
+    <router-link
+      to="/statements"
+      active-class="selected"
+    >
       <Icon name="#label" />
-      <div>标签</div>
+      <div>流水</div>
     </router-link>
-    <router-link to="/money" active-class="selected">
+    <router-link
+      to="/money"
+      active-class="selected"
+    >
       <Icon name="#money" />
       <div>记账</div>
     </router-link>
-    <router-link to="/statistics" active-class="selected">
+    <router-link
+      to="/statistics"
+      active-class="selected"
+    >
       <Icon name="#statistics" />
       <div>统计</div>
     </router-link>
@@ -28,5 +37,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "~@/assets/css/nav.scss";
+@import '~@/assets/css/nav.scss';
+
 </style>

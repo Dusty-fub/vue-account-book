@@ -3,7 +3,7 @@ type RecordItem = {
   notes: string;
   type: string;
   amount: number;
-  createdAt?: String;
+  createTime?: String;
 };
 
 //这个type是什么呀？
