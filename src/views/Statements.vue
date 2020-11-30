@@ -18,7 +18,13 @@
         </button>
       </div>
       <div v-if="!isPanelVisible">
-        <button class="showPanel" @click="showPanel">返回</button>
+        <div class="flowTopNav">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-back"></use>
+          </svg>
+          <button class="showPanel" @click="showPanel">返回</button>
+          <span>{{ "contddddddent" }}</span>
+        </div>
         <router-view></router-view>
       </div>
     </Layout>
@@ -154,6 +160,24 @@ export default class Labels extends Vue {
       align-items: flex-start;
       vertical-align: middle;
     }
+  }
+}
+.flowTopNav {
+  box-shadow: 0 1px #aaa;
+  display: flex;
+  align-items: center;
+  position: relative;
+  > svg {
+    font-size: 24px;
+  }
+  > button {
+    font-size: 18px;
+    line-height: 18px;
+  }
+  > span {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 

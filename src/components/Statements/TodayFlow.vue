@@ -2,8 +2,19 @@
   <div>
     <ol>
       <li v-for="(item, index) in todayList" :key="index">
-        <span>{{ item.createTime }}</span>
-        <span>{{ item.tag + "|" + item.amount }}</span>
+        <div>
+          <span>{{ item.tag }}</span>
+          <span>{{ item.createTime }}</span>
+        </div>
+        <div>
+          <span>
+            {{ item.type === "+" ? "收入:" : "支出:" }}
+          </span>
+          <span>
+            {{ item.amount }}
+          </span>
+        </div>
+        <div class="note"></div>
       </li>
     </ol>
   </div>
@@ -16,4 +27,8 @@ export default class extends vue {
   todayList = this.$store.state.todayItems;
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+li {
+  box-shadow: inset 0 -1px 2px #ddd;
+}
+</style>
