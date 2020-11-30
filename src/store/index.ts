@@ -8,6 +8,10 @@ export default new Vuex.Store({
     tags: ["衣", "食", "住"],
     recordList: [] as RecordItem[],
     localStorageKeyName: "recordList",
+    todayItems: [],
+    thisWeekItems: [],
+    thisMonthItems: [],
+    thisYearItems: [],
   },
   getters: {
     tags(state) {

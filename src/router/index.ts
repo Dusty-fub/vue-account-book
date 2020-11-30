@@ -14,6 +14,7 @@ const routes: Array<RouteConfig> = [
     name: "Money",
     component: () => import("../views/Money.vue"),
   },
+
   {
     path: "/statements",
     name: "Statements",
@@ -22,6 +23,18 @@ const routes: Array<RouteConfig> = [
       {
         path: "today",
         component: () => import("@/components/Statements/TodayFlow.vue"),
+      },
+      {
+        path: "this_week",
+        component: () => import("@/components/Statements/ThisWeekFlow.vue"),
+      },
+      {
+        path: "this_month",
+        component: () => import("@/components/Statements/ThisMonthFlow.vue"),
+      },
+      {
+        path: "this_year",
+        component: () => import("@/components/Statements/ThisYearFlow.vue"),
       },
     ],
   },

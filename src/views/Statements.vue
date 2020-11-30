@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">
     <Layout>
-      <div class="flowRange">
-        <button v-for="(item, index) in rangeList" :key="index" @click="showFlow">
+      <div class="flowRange" v-if="isPanelVisible">
+        <button v-for="(item, index) in rangeList" :key="index" @click="showFlow(index)">
           <span>
             {{ item }}
           </span>
@@ -11,19 +11,16 @@
               <span> 收入:{{ currentIncome[index] }} </span>
               <span> 支出:{{ currentCost[index] }}</span>
             </div>
-
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-forward"></use>
             </svg>
           </div>
         </button>
       </div>
-      <ol class="tags" v-if="false">
-        <li v-for="(item, index) in recordList" :key="index">
-          <span>{{ item.createTime }}</span>
-          <span>{{ item.tag + "|" + item.amount }}</span>
-        </li>
-      </ol>
+      <div v-if="!isPanelVisible">
+        <button class="showPanel" @click="showPanel">返回</button>
+        <router-view></router-view>
+      </div>
     </Layout>
   </div>
 </template>
@@ -45,7 +42,8 @@ export default class Labels extends Vue {
   name = "Statements";
   recordList: RecordItem[] = this.$store.state.recordList;
   rangeList = ["今天", "本周", "本月", "本年"];
-
+  routes = ["today", "this_week", "this_month", "this_year"];
+  isPanelVisible = true;
   currentYear = new Date().getFullYear();
   currentMonth = new Date().getMonth() + 1;
   currentDayOfMonth = new Date().getDate();
@@ -53,7 +51,12 @@ export default class Labels extends Vue {
   currentDate = `${this.currentYear}-${this.currentMonth}-${this.currentDayOfMonth}`;
   currentCost = [0, 0, 0, 0];
   currentIncome = [0, 0, 0, 0];
+
   created() {
+    this.$store.state.todayItems = [];
+    this.$store.state.thisWeekItems = [];
+    this.$store.state.thisMonthItems = [];
+    this.$store.state.thisYearItems = [];
     this.updateNumber();
   }
   @Watch("recordList")
@@ -69,19 +72,23 @@ export default class Labels extends Vue {
       let itemMonth = item.createTime?.split("-")[1];
       if (item.createTime === this.currentDate) {
         currentForm[0] = true;
+        this.$store.state.todayItems.push(item);
       }
       const index = currentDaysOfWeek.findIndex((day) => {
         return day === item.createTime;
       });
       if (index !== -1) {
         currentForm[1] = true;
+        this.$store.state.thisWeekItems.push(item);
       }
 
       if (itemMonth === this.currentMonth.toString() && itemYear === this.currentYear.toString()) {
         currentForm[2] = true;
+        this.$store.state.thisMonthItems.push(item);
       }
       if (itemYear === this.currentYear.toString()) {
         currentForm[3] = true;
+        this.$store.state.thisYearItems.push(item);
       }
       currentForm.map((flag, index) => {
         if (flag) {
@@ -94,8 +101,34 @@ export default class Labels extends Vue {
       });
     });
   }
-  showFlow() {
-    this.$router.push("/statements/today");
+
+  showFlow(index: any) {
+    if (this.$route.fullPath !== `/statements/${this.routes[index]}`) {
+      this.$router.push(`/statements/${this.routes[index]}`);
+    }
+    this.isPanelVisible = false;
+  }
+
+  showPanel() {
+    if (this.$route.fullPath !== `/statements`) {
+      this.$router.push(`/statements`);
+    }
+    this.isPanelVisible = true;
+  }
+
+  mounted() {
+    window.addEventListener(
+      "hashchange",
+      () => {
+        let currentPath = window.location.hash.slice(1);
+        if (currentPath === "/statements") {
+          this.isPanelVisible = true;
+        } else {
+          this.isPanelVisible = false;
+        }
+      },
+      false
+    );
   }
 }
 </script>
@@ -122,5 +155,9 @@ export default class Labels extends Vue {
       vertical-align: middle;
     }
   }
+}
+
+.showPanel {
+  padding: 0.5em 0;
 }
 </style>
