@@ -18,6 +18,12 @@ const routes: Array<RouteConfig> = [
     path: "/statements",
     name: "Statements",
     component: () => import("../views/Statements.vue"),
+    children: [
+      {
+        path: "today",
+        component: () => import("@/components/Statements/TodayFlow.vue"),
+      },
+    ],
   },
   {
     path: "/statistics",

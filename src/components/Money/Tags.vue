@@ -12,20 +12,9 @@
           <button class="confirm" @click="confirm">确认</button>
         </div>
         <div class="selectPanel" ref="selectPanel">
-          <div
-            class="touch"
-            ref="touch"
-            @touchstart="touchStart"
-            @touchmove.prevent="touchMove"
-            @touchend="touchEnd"
-          >
+          <div class="touch" ref="touch" @touchstart="touchStart" @touchmove.prevent="touchMove" @touchend="touchEnd">
             <ul class="current" ref="touchUl" v-show="showCateFlag">
-              <li
-                v-for="item in dataSource"
-                :key="item"
-                @click="selectOrCancel(item)"
-                :class="{ selected: selectedTag === item }"
-              >
+              <li v-for="item in dataSource" :key="item" @click="selectOrCancel(item)" :class="{ selected: selectedTag === item }">
                 {{ item }}
               </li>
 
@@ -46,12 +35,11 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop, Ref } from "vue-property-decorator";
+import { Component, Prop, Ref, Watch } from "vue-property-decorator";
 @Component
 export default class Tags extends Vue {
   @Prop(Array) readonly dataSource: string[] | undefined;
   selectedTag: string = "";
-  //默认应该只能选一个吧？ 何来selectedTags？
 
   showCateFlag: boolean = false;
 
@@ -97,14 +85,14 @@ export default class Tags extends Vue {
       const li = this.touchUl.childNodes[0] as HTMLLIElement;
       this.liHeight = li.offsetHeight;
       this.dropDownMaxDistance = 3 * this.liHeight;
-      this.dropUpMaxDistance =
-        (this.touchUl.childNodes.length - 3) * this.liHeight;
+      this.dropUpMaxDistance = (this.touchUl.childNodes.length - 3) * this.liHeight;
       this.selectPanel.style.height = this.liHeight * 5 + "px";
     });
   }
 
   confirmIndex: number = 0;
 
+  @Watch("dataSource")
   confirm() {
     this.showCateFlag = false;
 
@@ -147,17 +135,13 @@ export default class Tags extends Vue {
     if (distance > this.dropDownMaxDistance) {
       //下拉过度反弹
       this.touch.style.transition = "transform 0.2s linear";
-      this.touch.style.webkitTransform =
-        "translate3d(0," + 2 * this.liHeight + "px, 0)";
-      this.touch.style.transform =
-        "translate3d(0," + 2 * this.liHeight + "px, 0)";
+      this.touch.style.webkitTransform = "translate3d(0," + 2 * this.liHeight + "px, 0)";
+      this.touch.style.transform = "translate3d(0," + 2 * this.liHeight + "px, 0)";
     } else if (-distance > this.dropUpMaxDistance) {
       //上拉过度反弹
       this.touch.style.transition = "transform 0.2s linear";
-      this.touch.style.webkitTransform =
-        "translate3d(0," + "-" + this.dropUpMaxDistance + "px, 0)";
-      this.touch.style.transform =
-        "translate3d(0," + "-" + this.dropUpMaxDistance + "px, 0)";
+      this.touch.style.webkitTransform = "translate3d(0," + "-" + this.dropUpMaxDistance + "px, 0)";
+      this.touch.style.transform = "translate3d(0," + "-" + this.dropUpMaxDistance + "px, 0)";
     } else {
       this.touch.style.transition = "transform 0.2s linear";
       this.touch.style.webkitTransform = "translate3d(0," + distance + "px, 0)";
@@ -221,18 +205,8 @@ export default class Tags extends Vue {
 .touch {
   width: auto;
   position: relative;
-  background: -webkit-linear-gradient(
-    top,
-    #ffffff,
-    rgba(255, 255, 255, 0),
-    #ffffff
-  );
-  background: linear-gradient(
-    to bottom,
-    #ffffff,
-    rgba(255, 255, 255, 0),
-    #ffffff
-  );
+  background: -webkit-linear-gradient(top, #ffffff, rgba(255, 255, 255, 0), #ffffff);
+  background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0), #ffffff);
 }
 
 .touch ul li {
@@ -255,17 +229,7 @@ export default class Tags extends Vue {
   bottom: 0;
   width: 100%;
   pointer-events: none;
-  background: -webkit-linear-gradient(
-    top,
-    #ffffff,
-    rgba(255, 255, 255, 0),
-    #ffffff
-  );
-  background: linear-gradient(
-    to bottom,
-    #ffffff,
-    rgba(255, 255, 255, 0),
-    #ffffff
-  );
+  background: -webkit-linear-gradient(top, #ffffff, rgba(255, 255, 255, 0), #ffffff);
+  background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0), #ffffff);
 }
 </style>
