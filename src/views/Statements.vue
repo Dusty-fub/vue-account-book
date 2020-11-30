@@ -17,7 +17,7 @@
           </div>
         </button>
       </div>
-      <div v-if="!isPanelVisible">
+      <div v-else>
         <div class="flowTopNav">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-back"></use>

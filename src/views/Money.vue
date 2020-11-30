@@ -1,26 +1,17 @@
 <template>
   <div class="wrapper">
     <Layout>
-      <Types
-        :type="record.type"
-        @update:type="onUpdateType"
-      />
+      <Types :type="record.type" @update:type="onUpdateType" />
       <div class="output">{{ output }}</div>
-      <Tags
-        :dataSource.sync="tags"
-        @update:value="onUpdateTags"
-      />
-      <RecordDate @update:date='onUpdateDate' />
+      <Tags :dataSource.sync="tags" @update:value="onUpdateTags" />
+      <RecordDate @update:date="onUpdateDate" />
       <Notes @update:value="onUpdateNotes" />
-      <NumberPad
-        @update:value="onUpdateAmount"
-        @confirmRecord="saveRecord"
-      />
+      <NumberPad @update:value="onUpdateAmount" @confirmRecord="saveRecord" />
     </Layout>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 
@@ -29,7 +20,7 @@ import { clone } from "@/utils";
 import Layout from "@/components/Layout.vue";
 import Notes from "@/components/Money/Notes.vue";
 import NumberPad from "@/components/Money/NumberPad.vue";
-import Types from "@/components/Money/Types.vue";
+import Types from "@/components/Types.vue";
 import Tags from "@/components/Money/Tags.vue";
 import RecordDate from "@/components/Money/RecordDate.vue";
 
@@ -41,18 +32,7 @@ window.localStorage.setItem("version", "0.0.1");
 export default class Money extends Vue {
   name = "Money";
   output: string = "0";
-  costTags = [
-    "食品酒水",
-    "衣服饰品",
-    "居家物业",
-    "行车交通",
-    "交流通讯",
-    "休闲娱乐",
-    "学习进修",
-    "人情往来",
-    "医疗保健",
-    "其他杂项",
-  ];
+  costTags = ["食品酒水", "衣服饰品", "居家物业", "行车交通", "交流通讯", "休闲娱乐", "学习进修", "人情往来", "医疗保健", "其他杂项"];
   incomeTags = ["职业收入", "礼金收入", "中奖收入", "其他收入"];
   tags = this.costTags;
   createDate: string = "";
@@ -104,5 +84,4 @@ export default class Money extends Vue {
 }
 </script>
 
-<style lang='scss' scoped>
-</style>
+<style lang="scss" scoped></style>
