@@ -1,6 +1,6 @@
 <template>
   <svg>
-    <use :xlink:href="name" />
+    <use :xlink:href="name['0'] === '#' ? name : '#' + name" />
   </svg>
 </template>
 
@@ -21,6 +21,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@/assets/css/icon.scss';
-
+@import "~@/assets/css/icon.scss";
 </style>

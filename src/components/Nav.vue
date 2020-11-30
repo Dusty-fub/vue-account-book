@@ -1,12 +1,12 @@
 <template>
   <nav class="nav">
-    <router-link to="/money" active-class="selected">
-      <Icon name="#money" />
-      <div>记账</div>
-    </router-link>
     <router-link to="/labels" active-class="selected">
       <Icon name="#label" />
       <div>标签</div>
+    </router-link>
+    <router-link to="/money" active-class="selected">
+      <Icon name="#money" />
+      <div>记账</div>
     </router-link>
     <router-link to="/statistics" active-class="selected">
       <Icon name="#statistics" />
@@ -28,6 +28,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '~@/assets/css/nav.scss';
-
+@import "~@/assets/css/nav.scss";
 </style>

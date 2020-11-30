@@ -5,19 +5,19 @@
 </template>
 
 <style lang="scss">
-@import '~@/assets/css/reset.scss';
-@import '~@/assets/css/helper.scss';
+@import "~@/assets/css/reset.scss";
+@import "~@/assets/css/helper.scss";
 
 body {
-  font-family : $font-hei;
-  line-height : 1.5;
+  font-family: $font-hei;
+  line-height: 1.5;
+  background-color: #f5f5f5;
 }
 
 #app {
-  -webkit-font-smoothing : antialiased;
-  -moz-osx-font-smoothing : grayscale;
-  text-align : center;
-  color : #333333;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #333333;
 }
-
 </style>

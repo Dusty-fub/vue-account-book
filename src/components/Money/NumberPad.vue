@@ -1,6 +1,5 @@
 <template>
   <div class="numberPad">
-    <div class="output">{{ output }}</div>
     <div class="btns">
       <button @click="inputNumber('1')">1</button>
       <button @click="inputNumber('2')">2</button>
@@ -32,11 +31,12 @@ import { Component, Prop } from "vue-property-decorator";
 export default class NumberPad extends Vue {
   output: string = "0";
   inputNumber(val: string) {
-    console.log(val);
     if (val === "." && this.output.indexOf(".") > -1) {
     } else if (this.output === "0" && val !== ".") {
       this.output = val;
     } else this.output += val;
+
+    this.$emit("update:value", this.output);
   }
   onDel() {
     this.output = this.output.slice(0, -1) || "0";
@@ -45,7 +45,7 @@ export default class NumberPad extends Vue {
     this.output = "0";
   }
   onOk() {
-    this.$emit("update:value", this.output);
+    this.$emit("confirmRecord", this.output);
   }
 }
 </script>

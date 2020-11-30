@@ -4,13 +4,15 @@
   </div>
 </template>
 
-<script>
+<script lang='ts' >
+import Vue from 'vue'
 import Layout from "@/components/Layout.vue";
+import { Component, Watch } from "vue-property-decorator";
 
-export default {
-  name: "Statistics",
-  components: {
-    Layout,
-  },
+@Component({
+  components: { Layout}
+})
+export default class Statistics extends Vue{
+  
 };
 </script>
