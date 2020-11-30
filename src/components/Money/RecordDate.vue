@@ -87,6 +87,7 @@ export default class ReacordDate extends Vue {
     this.days = getDays(date.getFullYear(), date.getMonth() + 1);
 
     for (let i = 1; i < this.days; i++) this.dayDataSource.push(`${i}日`);
+    this.confirm();
   }
 
   @Watch("yearIndex")

@@ -23,13 +23,15 @@
 <script lang='ts'>
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
+
+import { clone } from "@/utils";
+
 import Layout from "@/components/Layout.vue";
 import Notes from "@/components/Money/Notes.vue";
 import NumberPad from "@/components/Money/NumberPad.vue";
 import Types from "@/components/Money/Types.vue";
 import Tags from "@/components/Money/Tags.vue";
 import RecordDate from "@/components/Money/RecordDate.vue";
-import model from "@/models/recordList.ts";
 
 window.localStorage.setItem("version", "0.0.1");
 
@@ -58,10 +60,6 @@ export default class Money extends Vue {
   //按理来说这个 分类也应该从localstorage获取
   //或者  写死的就写在这；用户自己添加的放到local storage中
 
-  //tags是作为props传给子组件的
-
-  //tags 如果使用滑动选择器的话， 它应该被放在body里的底部
-
   record: RecordItem = {
     tag: "",
     notes: "",
@@ -84,8 +82,17 @@ export default class Money extends Vue {
     this.createDate = `${rest[0]}-${rest[1]}-${rest[2]}`;
   }
 
-  //消费或收入的记录列表  这个需要改成从vuex中获取  这是一个Array<obj>
-  recordList: RecordItem[] = model.fetch();
+  recordList: RecordItem[] = [];
+  created() {
+    this.$store.dispatch("fetch").then(
+      (data) => {
+        this.recordList = data;
+      },
+      (err) => {
+        throw new Error(err);
+      }
+    );
+  }
 
   onUpdateTags(value: string) {
     this.record.tag = value;
@@ -100,17 +107,19 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
-    //this.record 为一个对象，保存一条消费或者收入记录
-    const recordCopy: RecordItem = model.clone(this.record);
-
-    //让用户自己选择每条记录的时间？
+    const recordCopy: RecordItem = clone(this.record);
     recordCopy.createdAt = this.createDate;
     this.recordList.push(recordCopy);
   }
 
   @Watch("recordList")
   onRecordListChange() {
-    model.save(this.recordList);
+    this.$store.dispatch("saveRecordList", this.recordList).then(
+      () => {},
+      (err) => {
+        throw new Error(err);
+      }
+    );
   }
 }
 </script>

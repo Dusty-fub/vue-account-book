@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     tags: ["衣", "食", "住"],
     recordList: [] as RecordItem[],
+    localStorageKeyName: "recordList",
   },
   getters: {
     tags(state) {
@@ -19,6 +20,19 @@ export default new Vuex.Store({
       // const record
     },
   },
-  actions: {},
+  actions: {
+    fetch() {
+      let fetchResult = window.localStorage.getItem(
+        this.state.localStorageKeyName
+      );
+      if (fetchResult === "undefined") {
+        fetchResult = "[]";
+      }
+      return JSON.parse(fetchResult || "[]") as RecordItem[];
+    },
+    saveRecordList(state, data: RecordItem[]) {
+      window.localStorage.setItem("recordList", JSON.stringify(data));
+    },
+  },
   modules: {},
 });
