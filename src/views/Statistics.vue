@@ -2,6 +2,7 @@
   <div class="wrapper">
     <Layout>
       <Types :type="record.type" @update:type="onUpdateType" />
+      <div v-if="this.data.length === 0">暂无数据</div>
       <ECharts :options="options"></ECharts>
     </Layout>
   </div>
@@ -73,6 +74,7 @@ export default class Statistics extends Vue {
         });
       }
     });
+    this.data = this.costData;
   }
 
   get options() {
@@ -80,8 +82,28 @@ export default class Statistics extends Vue {
       title: {
         text: "分类占比",
       },
+
+      labelLine: {
+        lenght2: 0,
+      },
+      label: {
+        fontSize: 12,
+        bleedMargin: 2,
+      },
       series: {
+        radius: [0, "50%"],
         type: "pie",
+        emphasis: {
+          label: {
+            show: true,
+            formatter: "{b}\n共计：{c}\n({d}%)",
+            position: "center",
+            textStyle: {
+              fontSize: "15",
+              fontWeight: "normal",
+            },
+          },
+        },
         data: this.data,
       },
     };
@@ -91,8 +113,8 @@ export default class Statistics extends Vue {
 
 <style lang="scss" scoped>
 .echarts {
-  width: 300px;
-  height: 300px;
+  width: 100%;
+  height: 100%;
 
   margin: 0 auto;
 }

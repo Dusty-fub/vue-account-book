@@ -75,7 +75,9 @@ export default class Money extends Vue {
   @Watch("recordList")
   onRecordListChange() {
     this.$store.dispatch("saveRecordList", this.recordList).then(
-      () => {},
+      () => {
+        this.$router.push("/statements");
+      },
       (err) => {
         throw new Error(err);
       }

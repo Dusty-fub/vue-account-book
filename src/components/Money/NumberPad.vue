@@ -40,9 +40,11 @@ export default class NumberPad extends Vue {
   }
   onDel() {
     this.output = this.output.slice(0, -1) || "0";
+    this.$emit("update:value", this.output);
   }
   onClear() {
     this.output = "0";
+    this.$emit("update:value", this.output);
   }
   onOk() {
     this.$emit("confirmRecord", this.output);
@@ -51,6 +53,5 @@ export default class NumberPad extends Vue {
 </script>
 
 <style scoped lang="scss">
-@import '~@/assets/css/Money/numberPad.scss';
-
+@import "~@/assets/css/Money/numberPad.scss";
 </style>
