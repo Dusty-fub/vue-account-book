@@ -2,8 +2,7 @@
   <div class="wrapper">
     <Layout>
       <Types :type="record.type" @update:type="onUpdateType" />
-      <div v-if="this.data.length === 0">暂无数据</div>
-      <ECharts :options="options"></ECharts>
+      <ECharts :options="options" ref="EChart"></ECharts>
       <div class="chooseMonth">
         <button @click="lastMonth">上月</button>
         <button @click="nextMonth">下月</button>
@@ -41,14 +40,20 @@ export default class Statistics extends Vue {
   incomeTags = this.$store.state.incomeTags;
   totalData: any = {};
   totalTags: any = {};
+  titleText = "";
+
+  currentMonth: string = this.$store.getters.currentMonth.toString();
+  currentYear: string = this.$store.getters.currentYear.toString();
+
   onUpdateType(value: string) {
     this.record.type = value;
     if (value === "+") {
       this.data = this.totalData["+"];
-      this.titleText = `${this.currentMonth}月收入分类占比`;
+      this.titleText = `${this.currentYear}年${this.currentMonth}月收入分类占比`;
     } else {
       this.data = this.totalData["-"];
     }
+    this.loading();
   }
 
   created() {
@@ -64,10 +69,19 @@ export default class Statistics extends Vue {
     this.count();
   }
 
-  titleText = "";
+  loading() {
+    (this.$refs.EChart as any).showLoading({
+      text: "暂无数据",
+      color: "#f12",
+      fontSize: 18,
+      textColor: "#8a8e91",
+      maskColor: "rgba(255, 255, 255, 0.1)",
+    });
 
-  currentMonth: string = this.$store.getters.currentMonth.toString();
-  currentYear: string = this.$store.getters.currentYear.toString();
+    if (this.data.length !== 0) {
+      (this.$refs.EChart as any).hideLoading();
+    }
+  }
 
   count() {
     this.totalData[this.record.type] = [];
@@ -94,10 +108,31 @@ export default class Statistics extends Vue {
       }
     });
 
-    this.data = this.totalData["-"];
-    this.titleText = `${this.currentMonth}月支出分类占比`;
+    this.data = this.totalData[this.record.type];
+    this.titleText = `${this.currentYear}年${this.currentMonth}月${this.record.type === "-" ? "支出" : "收入"}分类占比`;
   }
 
+  lastMonth() {
+    if (this.currentMonth === "1") {
+      this.currentYear = (Number(this.currentYear) - 1).toString();
+      this.currentMonth = "12";
+    } else {
+      this.currentMonth = (Number(this.currentMonth) - 1).toString();
+    }
+
+    this.count();
+    this.loading();
+  }
+  nextMonth() {
+    if (this.currentMonth === "12") {
+      this.currentYear = (Number(this.currentYear) + 1).toString();
+      this.currentMonth = "1";
+    } else {
+      this.currentMonth = (Number(this.currentMonth) + 1).toString();
+    }
+    this.count();
+    this.loading();
+  }
   get options() {
     return {
       title: {
@@ -129,21 +164,13 @@ export default class Statistics extends Vue {
       },
     };
   }
-
-  lastMonth() {
-    this.currentMonth = (Number(this.currentMonth) - 1).toString();
-    this.count();
-  }
-  nextMonth() {
-    console.log("next");
-  }
 }
 </script>
 
 <style lang="scss" scoped>
 .echarts {
   width: 100%;
-  height: 80%;
+  height: 80vh;
 
   margin: 0 auto;
 }
