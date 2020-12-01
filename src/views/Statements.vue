@@ -23,7 +23,7 @@
             <use xlink:href="#icon-back"></use>
           </svg>
           <button class="showPanel" @click="showPanel">返回</button>
-          <span>{{ "contddddddent" }}</span>
+          <span>{{ this.$store.state.flowTitle + " 流水" }}</span>
         </div>
         <router-view></router-view>
       </div>
@@ -51,7 +51,7 @@ export default class Labels extends Vue {
   routes = ["today", "this_week", "this_month", "this_year"];
   isPanelVisible = true;
   currentYear = new Date().getFullYear();
-  currentMonth = new Date().getMonth() + 1;
+  currentMonth = this.$store.getters.currentMonth;
   currentDayOfMonth = new Date().getDate();
   currentDayOfWeek = new Date().getDay();
   currentDate = `${this.currentYear}-${this.currentMonth}-${this.currentDayOfMonth}`;
@@ -78,7 +78,7 @@ export default class Labels extends Vue {
       let itemMonth = item.createTime?.split("-")[1];
       if (item.createTime === this.currentDate) {
         currentForm[0] = true;
-        this.$store.state.todayItems.push(item);
+        this.$store.state.dayItems.push(item);
       }
       const index = currentDaysOfWeek.findIndex((day) => {
         return day === item.createTime;
@@ -113,6 +113,7 @@ export default class Labels extends Vue {
       this.$router.push(`/statements/${this.routes[index]}`);
     }
     this.isPanelVisible = false;
+    this.$store.state.flowTitle = this.rangeList[index];
   }
 
   showPanel() {

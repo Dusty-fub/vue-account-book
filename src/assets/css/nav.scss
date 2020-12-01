@@ -1,16 +1,10 @@
 @import '~@/assets/css/helper.scss';
 .nav {
   display : flex;
-  border : 2px dashed steelblue;
   padding : 3px 0;
   a {
-    border : 1px dashed hotpink;
     box-shadow : 0 0 3px rgba(0, 0, 0, .25);
-    div {
-      // text-align : center;s
-    }
   }
-
   .selected {
     color : $color-red;
   }

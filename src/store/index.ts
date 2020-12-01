@@ -21,7 +21,8 @@ export default new Vuex.Store({
     recordList: [] as RecordItem[],
     localStorageKeyName: "recordList",
     Date: new Date(),
-    todayItems: [],
+    flowTitle: "",
+    dayItems: [],
     thisWeekItems: [],
     thisMonthItems: [],
     thisYearItems: [],
@@ -32,6 +33,9 @@ export default new Vuex.Store({
     },
     currentYear(state) {
       return state.Date.getFullYear();
+    },
+    currentDay(state) {
+      return state.Date.getDate();
     },
   },
   mutations: {
