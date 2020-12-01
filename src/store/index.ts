@@ -20,17 +20,24 @@ export default new Vuex.Store({
     incomeTags: ["职业收入", "礼金收入", "中奖收入", "其他收入"],
     recordList: [] as RecordItem[],
     localStorageKeyName: "recordList",
+    Date: new Date(),
     todayItems: [],
     thisWeekItems: [],
     thisMonthItems: [],
     thisYearItems: [],
   },
   getters: {
-    tags(state) {
-      // return state.tags;
+    currentMonth(state) {
+      return state.Date.getMonth() + 1;
+    },
+    currentYear(state) {
+      return state.Date.getFullYear();
     },
   },
   mutations: {
+    updateDate(state) {
+      state.Date = new Date();
+    },
     selectTag(state) {},
     createRecord(state, record) {
       // const record

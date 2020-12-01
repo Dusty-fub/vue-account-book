@@ -4,6 +4,10 @@
       <Types :type="record.type" @update:type="onUpdateType" />
       <div v-if="this.data.length === 0">暂无数据</div>
       <ECharts :options="options"></ECharts>
+      <div class="chooseMonth">
+        <button @click="lastMonth">上月</button>
+        <button @click="nextMonth">下月</button>
+      </div>
     </Layout>
   </div>
 </template>
@@ -15,7 +19,8 @@ import Types from "@/components/Types.vue";
 import { Component, Watch } from "vue-property-decorator";
 const ECharts: any = require("vue-echarts").default;
 import "echarts/lib/chart/pie";
-import "echarts/lib/component/polar";
+import "echarts/lib/chart/line";
+import "echarts/lib/component/title";
 
 @Component({
   components: { Layout, Types, ECharts },
@@ -34,61 +39,74 @@ export default class Statistics extends Vue {
   recordList = this.$store.state.recordList;
   costTags = this.$store.state.costTags;
   incomeTags = this.$store.state.incomeTags;
-
+  totalData: any = {};
+  totalTags: any = {};
   onUpdateType(value: string) {
     this.record.type = value;
     if (value === "+") {
-      this.data = this.incomeData;
+      this.data = this.totalData["+"];
+      this.titleText = `${this.currentMonth}月收入分类占比`;
     } else {
-      this.data = this.costData;
+      this.data = this.totalData["-"];
     }
   }
 
   created() {
+    this.totalData = {
+      "+": this.incomeData,
+      "-": this.costData,
+    };
+    this.totalTags = {
+      "+": this.incomeTags,
+      "-": this.costTags,
+    };
+
+    this.count();
+  }
+
+  titleText = "";
+
+  currentMonth: string = this.$store.getters.currentMonth.toString();
+  currentYear: string = this.$store.getters.currentYear.toString();
+
+  count() {
+    this.totalData[this.record.type] = [];
+
     this.recordList.map((item: RecordItem) => {
-      if (item.type === "-") {
-        this.costTags.map((tag: string) => {
+      let itemYear = item.createTime?.split("-")[0];
+      let itemMonth = item.createTime?.split("-")[1];
+
+      let isThisMonth = this.currentMonth === itemMonth && this.currentYear === itemYear;
+
+      if (isThisMonth) {
+        this.totalTags[item.type].map((tag: string) => {
           if (item.tag === tag) {
-            const tagIndex = this.costData.findIndex((obj: any) => {
+            const tagIndex = this.totalData[item.type].findIndex((obj: any) => {
               return obj.name === tag;
             });
             if (tagIndex !== -1) {
-              (this.costData[tagIndex] as any).value += item.amount;
+              (this.totalData[item.type][tagIndex] as any).value += item.amount;
             } else {
-              this.costData.push({ name: tag, value: item.amount });
-            }
-          }
-        });
-      } else if (item.type === "+") {
-        this.incomeTags.map((tag: string) => {
-          if (item.tag === tag) {
-            const tagIndex = this.incomeData.findIndex((obj: any) => {
-              return obj.name === tag;
-            });
-            if (tagIndex !== -1) {
-              (this.incomeData[tagIndex] as any).value += item.amount;
-            } else {
-              this.incomeData.push({ name: tag, value: item.amount });
+              this.totalData[item.type].push({ name: tag, value: item.amount });
             }
           }
         });
       }
     });
-    this.data = this.costData;
+
+    this.data = this.totalData["-"];
+    this.titleText = `${this.currentMonth}月支出分类占比`;
   }
 
   get options() {
     return {
       title: {
-        text: "分类占比",
-      },
-
-      labelLine: {
-        lenght2: 0,
-      },
-      label: {
-        fontSize: 12,
-        bleedMargin: 2,
+        text: this.titleText,
+        left: "center",
+        top: 50,
+        textStyle: {
+          color: "#ccc",
+        },
       },
       series: {
         radius: [0, "50%"],
@@ -104,9 +122,20 @@ export default class Statistics extends Vue {
             },
           },
         },
+        labelLine: {
+          length2: 6,
+        },
         data: this.data,
       },
     };
+  }
+
+  lastMonth() {
+    this.currentMonth = (Number(this.currentMonth) - 1).toString();
+    this.count();
+  }
+  nextMonth() {
+    console.log("next");
   }
 }
 </script>
@@ -114,8 +143,18 @@ export default class Statistics extends Vue {
 <style lang="scss" scoped>
 .echarts {
   width: 100%;
-  height: 100%;
+  height: 80%;
 
   margin: 0 auto;
+}
+
+.chooseMonth {
+  display: flex;
+  justify-content: space-around;
+  > button {
+    padding: 1em 2em;
+    box-shadow: 2px 2px 4px #999;
+    background-color: lighten(#628, 30%);
+  }
 }
 </style>

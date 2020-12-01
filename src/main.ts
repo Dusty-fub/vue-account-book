@@ -13,3 +13,7 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount("#app");
+
+setInterval(() => {
+  store.commit("updateDate");
+}, 1000);
