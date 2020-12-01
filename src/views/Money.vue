@@ -32,8 +32,8 @@ window.localStorage.setItem("version", "0.0.1");
 export default class Money extends Vue {
   name = "Money";
   output: string = "0";
-  costTags = ["食品酒水", "衣服饰品", "居家物业", "行车交通", "交流通讯", "休闲娱乐", "学习进修", "人情往来", "医疗保健", "其他杂项"];
-  incomeTags = ["职业收入", "礼金收入", "中奖收入", "其他收入"];
+  costTags = this.$store.state.costTags;
+  incomeTags = this.$store.state.incomeTags;
   tags = this.costTags;
   createDate: string = "";
   record: RecordItem = {

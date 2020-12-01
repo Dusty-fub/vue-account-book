@@ -26,22 +26,63 @@ export default class Statistics extends Vue {
     type: "-",
     amount: 0,
   };
+  data: Array<Object> = [];
+  costData: Array<Object> = [];
+  incomeData: Array<Object> = [];
+
+  recordList = this.$store.state.recordList;
+  costTags = this.$store.state.costTags;
+  incomeTags = this.$store.state.incomeTags;
+
   onUpdateType(value: string) {
     this.record.type = value;
+    if (value === "+") {
+      this.data = this.incomeData;
+    } else {
+      this.data = this.costData;
+    }
+  }
+
+  created() {
+    this.recordList.map((item: RecordItem) => {
+      if (item.type === "-") {
+        this.costTags.map((tag: string) => {
+          if (item.tag === tag) {
+            const tagIndex = this.costData.findIndex((obj: any) => {
+              return obj.name === tag;
+            });
+            if (tagIndex !== -1) {
+              (this.costData[tagIndex] as any).value += item.amount;
+            } else {
+              this.costData.push({ name: tag, value: item.amount });
+            }
+          }
+        });
+      } else if (item.type === "+") {
+        this.incomeTags.map((tag: string) => {
+          if (item.tag === tag) {
+            const tagIndex = this.incomeData.findIndex((obj: any) => {
+              return obj.name === tag;
+            });
+            if (tagIndex !== -1) {
+              (this.incomeData[tagIndex] as any).value += item.amount;
+            } else {
+              this.incomeData.push({ name: tag, value: item.amount });
+            }
+          }
+        });
+      }
+    });
   }
 
   get options() {
     return {
       title: {
-        text: "分类",
+        text: "分类占比",
       },
       series: {
         type: "pie",
-        data: [
-          { name: "A", value: 1212 },
-          { name: "B", value: 2323 },
-          { name: "C", value: 1919 },
-        ],
+        data: this.data,
       },
     };
   }
@@ -50,7 +91,9 @@ export default class Statistics extends Vue {
 
 <style lang="scss" scoped>
 .echarts {
-  width: 100%;
-  height: 100%;
+  width: 300px;
+  height: 300px;
+
+  margin: 0 auto;
 }
 </style>

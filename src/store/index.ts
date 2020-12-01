@@ -5,7 +5,19 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    tags: ["衣", "食", "住"],
+    costTags: [
+      "食品酒水",
+      "衣服饰品",
+      "居家物业",
+      "行车交通",
+      "交流通讯",
+      "休闲娱乐",
+      "学习进修",
+      "人情往来",
+      "医疗保健",
+      "其他杂项",
+    ],
+    incomeTags: ["职业收入", "礼金收入", "中奖收入", "其他收入"],
     recordList: [] as RecordItem[],
     localStorageKeyName: "recordList",
     todayItems: [],
@@ -15,7 +27,7 @@ export default new Vuex.Store({
   },
   getters: {
     tags(state) {
-      return state.tags;
+      // return state.tags;
     },
   },
   mutations: {
