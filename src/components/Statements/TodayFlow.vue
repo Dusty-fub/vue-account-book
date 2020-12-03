@@ -24,6 +24,9 @@
 <script lang="ts">
 import vue from "vue";
 import { Component } from "vue-property-decorator";
+const ECharts: any = require("vue-echarts").default;
+import "echarts";
+
 @Component
 export default class extends vue {
   recordList = this.$store.state.recordList;

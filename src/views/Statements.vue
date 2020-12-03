@@ -2,7 +2,11 @@
   <div class="wrapper">
     <Layout>
       <div class="flowRange" v-if="isPanelVisible">
-        <button v-for="(item, index) in rangeList" :key="index" @click="showFlow(index)">
+        <button
+          v-for="(item, index) in rangeList"
+          :key="index"
+          @click="showFlow(index)"
+        >
           <span>
             {{ item }}
           </span>
@@ -17,6 +21,20 @@
           </div>
         </button>
       </div>
+
+      <div v-else-if="isBarVisible">
+        <div class="flowTopNav">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-back"></use>
+          </svg>
+          <button class="showPanel" @click="hideCompareBar">返回</button>
+          <span>{{ "对比" }}</span>
+        </div>
+
+        <div class="echartWrap">
+          <ECharts :options="options" ref="EChart"></ECharts>
+        </div>
+      </div>
       <div v-else>
         <div class="flowTopNav">
           <svg class="icon" aria-hidden="true">
@@ -24,6 +42,7 @@
           </svg>
           <button class="showPanel" @click="showPanel">返回</button>
           <span>{{ this.$store.state.flowTitle + " 流水" }}</span>
+          <button @click="showCompareBar">对比</button>
         </div>
         <router-view></router-view>
       </div>
@@ -35,6 +54,9 @@
 import Vue from "vue";
 import { Component, PropSync, Watch } from "vue-property-decorator";
 
+const ECharts: any = require("vue-echarts").default;
+import "echarts";
+
 import Layout from "@/components/Layout.vue";
 import Icon from "@/components/Icon.vue";
 
@@ -42,6 +64,7 @@ import Icon from "@/components/Icon.vue";
   components: {
     Layout,
     Icon,
+    ECharts,
   },
 })
 export default class Labels extends Vue {
@@ -50,6 +73,7 @@ export default class Labels extends Vue {
   rangeList = ["今天", "本周", "本月", "本年"];
   routes = ["today", "this_week", "this_month", "this_year"];
   isPanelVisible = true;
+  isBarVisible = false;
   currentYear = new Date().getFullYear();
   currentMonth = this.$store.getters.currentMonth;
   currentDayOfMonth = new Date().getDate();
@@ -68,7 +92,10 @@ export default class Labels extends Vue {
   @Watch("recordList")
   updateNumber() {
     let currentDaysOfWeek = Array.from(new Array(7)).map((_, i) => {
-      const date = new Date(Date.now() + (i - ((this.currentDayOfWeek + 6) % 7)) * 1000 * 60 * 60 * 24);
+      const date = new Date(
+        Date.now() +
+          (i - ((this.currentDayOfWeek + 6) % 7)) * 1000 * 60 * 60 * 24
+      );
       return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     });
 
@@ -88,7 +115,10 @@ export default class Labels extends Vue {
         this.$store.state.thisWeekItems.push(item);
       }
 
-      if (itemMonth === this.currentMonth.toString() && itemYear === this.currentYear.toString()) {
+      if (
+        itemMonth === this.currentMonth.toString() &&
+        itemYear === this.currentYear.toString()
+      ) {
         currentForm[2] = true;
         this.$store.state.thisMonthItems.push(item);
       }
@@ -137,6 +167,72 @@ export default class Labels extends Vue {
       false
     );
   }
+
+  showCompareBar() {
+    this.isBarVisible = true;
+  }
+  hideCompareBar() {
+    this.isBarVisible = false;
+  }
+
+  get options() {
+    let keys: any = [1, 2, 3, 4];
+    let values: any = [300, 400, 500, 200];
+    let date = Date.now();
+
+    let times: any = [];
+
+    for (let i = 0; i < 10; i++) {
+      let value = Math.round(Math.random() * 10);
+      times.push([date, value]);
+      console.log(new Date(date).getDate());
+      date = date + 1000 * 60 * 60 * 24;
+    }
+
+    return {
+      grid: {
+        left: 50,
+        right: 30,
+      },
+      xAxis: {
+        type: "time",
+        // axisTick: { alignWithLabel: true },
+        // axisLine: { lineStyle: { color: "#666" } },
+        // axisLabel: {
+        //   formatter: function (value: string, index: number) {
+        //     return value.substr(5);
+        //   },
+        // },
+        splitLine: {
+          show: false,
+        },
+      },
+      yAxis: {
+        type: "value",
+        show: false,
+        splitLine: {
+          show: false,
+        },
+      },
+      series: [
+        {
+          symbol: "circle",
+          symbolSize: 12,
+          // itemStyle: { borderWidth: 1, color: "#666", borderColor: "#666" },
+          // lineStyle: {width: 10},
+          data: times,
+          type: "bar",
+          barWidth: 20,
+        },
+      ],
+      tooltip: {
+        show: true,
+        triggerOn: "click",
+        position: "top",
+        formatter: "{c}",
+      },
+    };
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -180,9 +276,21 @@ export default class Labels extends Vue {
     left: 50%;
     transform: translateX(-50%);
   }
+
+  > button:last-child {
+    background-color: lightblue;
+    padding: 0.5em;
+    position: absolute;
+    right: 0;
+  }
 }
 
 .showPanel {
   padding: 0.5em 0;
+}
+
+.echartWrap {
+  max-width: 100%;
+  overflow: auto;
 }
 </style>
