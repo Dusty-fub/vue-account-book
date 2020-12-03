@@ -1,30 +1,41 @@
 <template>
   <div class="wrapper">
     <Layout>
-      <div class="echartWrap" ref="chartWrapper">
-        <ECharts :options="options" ref="EChart"></ECharts>
-      </div>
+      <template v-if="isPanelVisible">
+        <div class="changeBar">
+          <button @click="changeBarTime">
+            {{ dayOrMonth === "day" ? "每日对比" : "月度对比" }}
+          </button>
+          <button @click="changeBarType">
+            {{ costOrIncome === "cost" ? "支出" : "收入" }}
+          </button>
+        </div>
+        <div class="echartWrap" ref="chartWrapper">
+          <ECharts :options="options" ref="EChart"></ECharts>
+        </div>
 
-      <div class="flowRange" v-if="isPanelVisible">
-        <button
-          v-for="(item, index) in rangeList"
-          :key="index"
-          @click="showFlow(index)"
-        >
-          <span>
-            {{ item }}
-          </span>
-          <div>
-            <div class="accountNumber">
-              <span> 收入:{{ currentIncome[index] }} </span>
-              <span> 支出:{{ currentCost[index] }}</span>
+        <div class="flowRange">
+          <button
+            v-for="(item, index) in rangeList"
+            :key="index"
+            @click="showFlow(index)"
+          >
+            <span>
+              {{ item }}
+            </span>
+            <div>
+              <div class="accountNumber">
+                <span> 收入:{{ currentIncome[index] }} </span>
+                <span> 支出:{{ currentCost[index] }}</span>
+              </div>
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-forward"></use>
+              </svg>
             </div>
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-forward"></use>
-            </svg>
-          </div>
-        </button>
-      </div>
+          </button>
+        </div>
+      </template>
+
       <div v-else>
         <div class="flowTopNav">
           <svg class="icon" aria-hidden="true">
@@ -139,6 +150,10 @@ export default class Labels extends Vue {
       this.$router.push(`/statements`);
     }
     this.isPanelVisible = true;
+    setTimeout(() => {
+      const div = this.$refs.chartWrapper as HTMLDivElement;
+      div.scrollLeft = div.scrollWidth;
+    });
   }
 
   mounted() {
@@ -156,6 +171,10 @@ export default class Labels extends Vue {
     );
     const div = this.$refs.chartWrapper as HTMLDivElement;
     div.scrollLeft = div.scrollWidth;
+    let { barData, times, incomeBarData } = this.gerBarData();
+    this.barValues = barData;
+    this.incomeBarValues = incomeBarData;
+    this.costBarValues = barData;
   }
 
   gerBarData() {
@@ -164,36 +183,45 @@ export default class Labels extends Vue {
     let times: any = [];
     let isFirst = true;
 
+    let totalData: any = {
+      "-": [],
+      "+": [],
+    };
+
     this.recordList.map((record) => {
       let now = Date.now();
-      if (record.type === "-") {
-        Array.from(new Array(31)).map((_, index) => {
-          let chosedDate = new Date(now);
 
-          let chosedYear = chosedDate.getFullYear();
-          let chosedMonth = chosedDate.getMonth() + 1;
-          let chosedDayOfMonth = chosedDate.getDate();
-          let newDate = `${chosedYear}-${chosedMonth}-${chosedDayOfMonth}`;
+      Array.from(new Array(31)).map((_, index) => {
+        let chosedDate = new Date(now);
 
-          times[30 - index] = newDate;
-          if (!barData[30 - index]) {
-            barData[30 - index] = 0;
-          }
+        let chosedYear = chosedDate.getFullYear();
+        let chosedMonth = chosedDate.getMonth() + 1;
+        let chosedDayOfMonth = chosedDate.getDate();
+        let newDate = `${chosedYear}-${chosedMonth}-${chosedDayOfMonth}`;
 
-          if (record.createTime === newDate) {
-            barData[30 - index] += record.amount;
-          }
-          now = now - 1000 * 60 * 60 * 24;
-        });
-      }
+        times[30 - index] = newDate;
+        if (!totalData[record.type][30 - index]) {
+          totalData[record.type][30 - index] = 0;
+        }
+
+        if (record.createTime === newDate) {
+          totalData[record.type][30 - index] += record.amount;
+        }
+        now = now - 1000 * 60 * 60 * 24;
+      });
     });
 
-    return { barData, times };
+    barData = totalData["-"];
+    let incomeBarData = totalData["+"];
+    return { barData, times, incomeBarData };
   }
 
-  get options() {
-    let { barData, times } = this.gerBarData();
+  barValues = [];
+  incomeBarValues = [];
+  costBarValues = [];
 
+  get options() {
+    let { times } = this.gerBarData();
     return {
       grid: {
         left: 50,
@@ -229,7 +257,7 @@ export default class Labels extends Vue {
             color: "#666",
             borderColor: "#666",
           },
-          data: barData,
+          data: this.barValues,
           type: "bar",
           barWidth: 15,
           barMinHeight: 5,
@@ -242,6 +270,27 @@ export default class Labels extends Vue {
         formatter: "{c}",
       },
     };
+  }
+
+  dayOrMonth = "day";
+  costOrIncome = "cost";
+
+  changeBarTime() {
+    if (this.dayOrMonth === "day") {
+      this.dayOrMonth = "Month";
+    } else {
+      this.dayOrMonth = "day";
+    }
+  }
+
+  changeBarType() {
+    if (this.costOrIncome === "cost") {
+      this.barValues = this.incomeBarValues;
+      this.costOrIncome = "income";
+    } else {
+      this.barValues = this.costBarValues;
+      this.costOrIncome = "cost";
+    }
   }
 }
 </script>
@@ -301,5 +350,14 @@ export default class Labels extends Vue {
 .echarts {
   height: 100%;
   width: 430%;
+}
+
+.changeBar {
+  display: flex;
+  justify-content: space-around;
+  > button {
+    padding: 0.5em;
+    border: 1px dashed #531;
+  }
 }
 </style>
