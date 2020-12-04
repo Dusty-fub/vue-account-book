@@ -171,13 +171,21 @@ export default class Labels extends Vue {
     );
     const div = this.$refs.chartWrapper as HTMLDivElement;
     div.scrollLeft = div.scrollWidth;
-    let { barData, times, incomeBarData } = this.gerBarData();
-    this.barValues = barData;
-    this.incomeBarValues = incomeBarData;
-    this.costBarValues = barData;
+    let { dayTimes, dayCostData, dayIncomeData } = this.getBarData();
+    let { monthTimes, monthCostData, monthIncomeData } = this.getMonthsData();
+    this.dayTimes = dayTimes;
+    this.dayCostData = dayCostData;
+    this.dayIncomeData = dayIncomeData;
+
+    this.monthTimes = monthTimes;
+    this.monthIncomeData = monthIncomeData;
+    this.monthCostData = monthCostData;
+
+    this.barTimes = this.dayTimes;
+    this.barValues = this.dayCostData;
   }
 
-  gerBarData() {
+  getBarData() {
     let barData: any = Array(31);
 
     let times: any = [];
@@ -211,17 +219,61 @@ export default class Labels extends Vue {
       });
     });
 
-    barData = totalData["-"];
-    let incomeBarData = totalData["+"];
-    return { barData, times, incomeBarData };
+    let dayCostData = totalData["-"];
+    let dayIncomeData = totalData["+"];
+    let dayTimes = times;
+    return { dayTimes, dayCostData, dayIncomeData };
+  }
+  getMonthsData() {
+    let times: any = [];
+    let totalData: any = {
+      "-": [],
+      "+": [],
+    };
+
+    this.recordList.map((record) => {
+      let chosedDate = new Date();
+      let chosedYear = chosedDate.getFullYear();
+      let chosedMonth = chosedDate.getMonth() + 1;
+
+      Array.from(new Array(12)).map((_, index) => {
+        times[11 - index] = `${chosedYear}-${chosedMonth}`;
+
+        if (!totalData[record.type][11 - index]) {
+          totalData[record.type][11 - index] = 0;
+        }
+
+        if (record.createTime?.startsWith(`${times[11 - index]}-`)) {
+          totalData[record.type][11 - index] += record.amount;
+        }
+
+        if (chosedMonth === 1) {
+          chosedYear -= 1;
+          chosedMonth = 12;
+        } else {
+          chosedMonth -= 1;
+        }
+      });
+    });
+
+    let monthTimes = times;
+    let monthCostData = totalData["-"];
+    let monthIncomeData = totalData["+"];
+
+    return { monthTimes, monthCostData, monthIncomeData };
   }
 
+  barTimes = [];
   barValues = [];
-  incomeBarValues = [];
-  costBarValues = [];
+
+  dayTimes = [];
+  dayCostData = [];
+  dayIncomeData = [];
+  monthTimes = [];
+  monthCostData = [];
+  monthIncomeData = [];
 
   get options() {
-    let { times } = this.gerBarData();
     return {
       grid: {
         left: 50,
@@ -236,7 +288,7 @@ export default class Labels extends Vue {
             return value.substr(5);
           },
         },
-        data: times,
+        data: this.barTimes,
         splitLine: {
           show: false,
         },
@@ -277,18 +329,46 @@ export default class Labels extends Vue {
 
   changeBarTime() {
     if (this.dayOrMonth === "day") {
-      this.dayOrMonth = "Month";
+      if (this.costOrIncome === "cost") {
+        this.barValues = this.monthCostData;
+        this.barTimes = this.monthTimes;
+      } else {
+        this.barValues = this.monthIncomeData;
+        this.barTimes = this.monthTimes;
+      }
+      this.dayOrMonth = "month";
     } else {
+      if (this.costOrIncome === "cost") {
+        this.barValues = this.dayCostData;
+        this.barTimes = this.dayTimes;
+      } else {
+        this.barValues = this.dayIncomeData;
+        this.barTimes = this.dayTimes;
+      }
+
       this.dayOrMonth = "day";
     }
   }
 
   changeBarType() {
     if (this.costOrIncome === "cost") {
-      this.barValues = this.incomeBarValues;
+      if (this.dayOrMonth === "day") {
+        this.barValues = this.dayIncomeData;
+        this.barTimes = this.dayTimes;
+      } else {
+        this.barValues = this.monthIncomeData;
+        this.barTimes = this.monthTimes;
+      }
       this.costOrIncome = "income";
     } else {
-      this.barValues = this.costBarValues;
+      if (this.dayOrMonth === "day") {
+        this.barValues = this.dayCostData;
+        this.barTimes = this.dayTimes;
+      } else {
+        this.barValues = this.monthCostData;
+        this.barTimes = this.monthTimes;
+      }
+
       this.costOrIncome = "cost";
     }
   }
