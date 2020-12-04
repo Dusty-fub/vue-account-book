@@ -171,8 +171,14 @@ export default class Labels extends Vue {
     );
     const div = this.$refs.chartWrapper as HTMLDivElement;
     div.scrollLeft = div.scrollWidth;
-    let { dayTimes, dayCostData, dayIncomeData } = this.getBarData();
-    let { monthTimes, monthCostData, monthIncomeData } = this.getMonthsData();
+    let {
+      monthTimes,
+      monthCostData,
+      monthIncomeData,
+      dayTimes,
+      dayCostData,
+      dayIncomeData,
+    } = this.getBarData();
     this.dayTimes = dayTimes;
     this.dayCostData = dayCostData;
     this.dayIncomeData = dayIncomeData;
@@ -189,25 +195,30 @@ export default class Labels extends Vue {
     let barData: any = Array(31);
 
     let times: any = [];
-    let isFirst = true;
 
     let totalData: any = {
       "-": [],
       "+": [],
     };
 
+    let monthTimes: any = [];
+    let monthTotalData: any = {
+      "-": [],
+      "+": [],
+    };
+
     this.recordList.map((record) => {
       let now = Date.now();
+      let chosedYear = new Date().getFullYear();
+      let chosedMonth = new Date().getMonth() + 1;
 
       Array.from(new Array(31)).map((_, index) => {
-        let chosedDate = new Date(now);
-
-        let chosedYear = chosedDate.getFullYear();
-        let chosedMonth = chosedDate.getMonth() + 1;
-        let chosedDayOfMonth = chosedDate.getDate();
-        let newDate = `${chosedYear}-${chosedMonth}-${chosedDayOfMonth}`;
+        let newDate = `${new Date(now).getFullYear()}-${
+          new Date(now).getMonth() + 1
+        }-${new Date(now).getDate()}`;
 
         times[30 - index] = newDate;
+
         if (!totalData[record.type][30 - index]) {
           totalData[record.type][30 - index] = 0;
         }
@@ -216,51 +227,43 @@ export default class Labels extends Vue {
           totalData[record.type][30 - index] += record.amount;
         }
         now = now - 1000 * 60 * 60 * 24;
+
+        if (index < 12) {
+          monthTimes[11 - index] = `${chosedYear}-${chosedMonth}`;
+
+          if (!monthTotalData[record.type][11 - index]) {
+            monthTotalData[record.type][11 - index] = 0;
+          }
+
+          if (record.createTime?.startsWith(`${monthTimes[11 - index]}-`)) {
+            monthTotalData[record.type][11 - index] += record.amount;
+          }
+
+          if (chosedMonth === 1) {
+            chosedYear -= 1;
+            chosedMonth = 12;
+          } else {
+            chosedMonth -= 1;
+          }
+        }
       });
     });
 
     let dayCostData = totalData["-"];
     let dayIncomeData = totalData["+"];
     let dayTimes = times;
-    return { dayTimes, dayCostData, dayIncomeData };
-  }
-  getMonthsData() {
-    let times: any = [];
-    let totalData: any = {
-      "-": [],
-      "+": [],
+
+    let monthCostData = monthTotalData["-"];
+    let monthIncomeData = monthTotalData["+"];
+
+    return {
+      monthTimes,
+      monthCostData,
+      monthIncomeData,
+      dayTimes,
+      dayCostData,
+      dayIncomeData,
     };
-
-    this.recordList.map((record) => {
-      let chosedDate = new Date();
-      let chosedYear = chosedDate.getFullYear();
-      let chosedMonth = chosedDate.getMonth() + 1;
-
-      Array.from(new Array(12)).map((_, index) => {
-        times[11 - index] = `${chosedYear}-${chosedMonth}`;
-
-        if (!totalData[record.type][11 - index]) {
-          totalData[record.type][11 - index] = 0;
-        }
-
-        if (record.createTime?.startsWith(`${times[11 - index]}-`)) {
-          totalData[record.type][11 - index] += record.amount;
-        }
-
-        if (chosedMonth === 1) {
-          chosedYear -= 1;
-          chosedMonth = 12;
-        } else {
-          chosedMonth -= 1;
-        }
-      });
-    });
-
-    let monthTimes = times;
-    let monthCostData = totalData["-"];
-    let monthIncomeData = totalData["+"];
-
-    return { monthTimes, monthCostData, monthIncomeData };
   }
 
   barTimes = [];
@@ -337,6 +340,11 @@ export default class Labels extends Vue {
         this.barTimes = this.monthTimes;
       }
       this.dayOrMonth = "month";
+
+      (this.$refs.EChart as any).$el.style.width = "150%";
+      (this.$refs.EChart as any).resize({
+        width: (this.$refs.EChart as any).$el.offsetWidth,
+      });
     } else {
       if (this.costOrIncome === "cost") {
         this.barValues = this.dayCostData;
@@ -347,6 +355,15 @@ export default class Labels extends Vue {
       }
 
       this.dayOrMonth = "day";
+
+      (this.$refs.EChart as any).$el.style.width = "390%";
+      (this.$refs.EChart as any).resize({
+        width: (this.$refs.EChart as any).$el.offsetWidth,
+      });
+      setTimeout(() => {
+        const div = this.$refs.chartWrapper as HTMLDivElement;
+        div.scrollLeft = div.scrollWidth;
+      });
     }
   }
 
@@ -429,7 +446,7 @@ export default class Labels extends Vue {
 
 .echarts {
   height: 100%;
-  width: 430%;
+  width: 390%;
 }
 
 .changeBar {
