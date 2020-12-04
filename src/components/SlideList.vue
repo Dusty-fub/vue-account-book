@@ -50,11 +50,12 @@ export default class SlideList extends Vue {
   }
 
   confirm() {
-    let transformY = this.touch.style.transform.split(",")[1] || "0px";
+    let transformY = this.touch.style.transform.split(",")[1];
 
-    transformY = transformY.slice(0, -2);
-
-    this.$emit("update:confirmIndex", (80 - parseInt(transformY)) / 40);
+    if (transformY) {
+      transformY = transformY.slice(0, -2);
+      this.$emit("update:confirmIndex", (80 - parseInt(transformY)) / 40);
+    }
   }
 
   touchStart(e: TouchEvent) {
@@ -104,7 +105,6 @@ export default class SlideList extends Vue {
       this.touch.style.webkitTransform = "translate3d(0," + distance + "px, 0)";
       this.touch.style.transform = "translate3d(0," + distance + "px, 0)";
     }
-
     this.confirm();
   }
 }

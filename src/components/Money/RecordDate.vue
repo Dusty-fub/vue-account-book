@@ -1,20 +1,37 @@
 <template>
   <div class="RecordDate">
     <div>
-      <button @click="showCate">{{ this.yearIndex + 1900 }}-{{ this.monthIndex + 1 }}-{{ this.dayIndex }}</button>
+      <button @click="showCate">
+        {{ this.yearIndex + 1900 }}-{{ this.monthIndex + 1 }}-{{ dayIndex }}
+      </button>
     </div>
     <div :class="{ wrap: true, showWrap: showCateFlag }">
-      <div class="grayLayer"></div>
+      <div class="grayLayer" @click="clickGrayLayer"></div>
       <div class="content">
         <div class="confirmWrap">
           <button class="confirm" @click="confirm">确认</button>
         </div>
         <div class="selectPanel" ref="selectPanel">
-          <SlideList :DataSource="yearDataSource" :confirmIndex.sync="yearIndex" :liHeight="liHeight" :position="yearPosition" />
+          <SlideList
+            :DataSource="yearDataSource"
+            :confirmIndex.sync="yearIndex"
+            :liHeight="liHeight"
+            :position="yearPosition"
+          />
 
-          <SlideList :DataSource="monthDataSource" :confirmIndex.sync="monthIndex" :liHeight="liHeight" :position="monthPosition" />
+          <SlideList
+            :DataSource="monthDataSource"
+            :confirmIndex.sync="monthIndex"
+            :liHeight="liHeight"
+            :position="monthPosition"
+          />
 
-          <SlideList :DataSource="dayDataSource" :confirmIndex.sync="dayIndex" :liHeight="liHeight" :position="dayPosition" />
+          <SlideList
+            :DataSource="dayDataSource"
+            :confirmIndex.sync="dayIndex"
+            :liHeight="liHeight"
+            :position="dayPosition"
+          />
 
           <div class="selectLine"></div>
           <div class="Mask"></div>
@@ -43,39 +60,48 @@ export default class ReacordDate extends Vue {
 
   yearDataSource: string[] = [];
   yearIndex: number = new Date().getFullYear() - 1900;
+  currentYear = new Date().getFullYear();
   yearPosition: number = 1902 - new Date().getFullYear();
 
   monthDataSource: string[] = [];
   monthIndex: number = new Date().getMonth();
   monthPosition: number = 2 - new Date().getMonth();
 
-  days: number = 30;
+  daysOfMonth: number = getDays(
+    new Date().getFullYear(),
+    new Date().getMonth() + 1
+  );
   dayDataSource: string[] = [];
   dayIndex: number = new Date().getDate();
-  dayPosition: number = 2 - new Date().getDay();
+  dayPosition: number = 3 - new Date().getDate();
 
   created() {
-    for (let i = 0; i < 200; i++) this.yearDataSource.push(`${i + 1900}年`);
-    for (let i = 1; i < 13; i++) this.monthDataSource.push(`${i}月`);
-
-    let date = new Date();
-    this.days = getDays(date.getFullYear(), date.getMonth() + 1);
-
-    for (let i = 1; i < this.days; i++) this.dayDataSource.push(`${i}日`);
+    this.initData();
     this.confirm();
   }
 
+  initData() {
+    for (let i = 1900; i < 2100; i++) {
+      this.yearDataSource.push(`${i}年`);
+    }
+    for (let i = 1; i < 13; i++) {
+      this.monthDataSource.push(`${i}月`);
+    }
+    for (let i = 1; i < this.daysOfMonth + 1; i++) {
+      this.dayDataSource.push(`${i}日`);
+    }
+  }
+
+  // 更新 daysOfMonth ， 随之更新 dayDataSource
   @Watch("yearIndex")
   onYearChanged(val: number, oldVal: number) {
-    this.days = getDays(val + 1900, this.monthIndex + 1);
+    this.daysOfMonth = getDays(val + 1900, this.monthIndex + 1);
   }
-
   @Watch("monthIndex")
   onMonthChanged(val: number, oldVal: number) {
-    this.days = getDays(this.yearIndex + 1900, val + 1);
+    this.daysOfMonth = getDays(this.yearIndex + 1900, val + 1);
   }
-
-  @Watch("days")
+  @Watch("daysOfMonth")
   onDaysChanged(val: number, oldVal: number) {
     this.dayDataSource = [];
     for (let i = 1; i < val + 1; i++) {
@@ -86,17 +112,24 @@ export default class ReacordDate extends Vue {
   showCate() {
     this.showCateFlag = true;
     this.$nextTick(() => {
-      this.li = this.selectPanel.childNodes[0].childNodes[0].childNodes[0] as HTMLLIElement;
+      this.li = this.selectPanel.childNodes[0].childNodes[0]
+        .childNodes[0] as HTMLLIElement;
       this.liHeight = this.li.offsetHeight;
-
       this.selectPanel.style.height = this.liHeight * 5 + "px";
     });
   }
 
+  clickGrayLayer() {
+    this.showCateFlag = false;
+  }
   confirm() {
     this.showCateFlag = false;
-
-    this.$emit("update:date", this.yearIndex + 1900, this.monthIndex + 1, this.dayIndex);
+    this.$emit(
+      "update:date",
+      this.yearIndex + 1900,
+      this.monthIndex + 1,
+      this.dayIndex
+    );
   }
 }
 </script>
@@ -122,7 +155,6 @@ export default class ReacordDate extends Vue {
   right: 0;
   background: hsla(0, 0%, 50%, 70%);
   z-index: 2;
-  pointer-events: none;
   display: block;
 }
 
@@ -166,7 +198,17 @@ export default class ReacordDate extends Vue {
   bottom: 0;
   width: 100%;
   pointer-events: none;
-  background: -webkit-linear-gradient(top, #ffffff, rgba(255, 255, 255, 0), #ffffff);
-  background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0), #ffffff);
+  background: -webkit-linear-gradient(
+    top,
+    #ffffff,
+    rgba(255, 255, 255, 0),
+    #ffffff
+  );
+  background: linear-gradient(
+    to bottom,
+    #ffffff,
+    rgba(255, 255, 255, 0),
+    #ffffff
+  );
 }
 </style>
