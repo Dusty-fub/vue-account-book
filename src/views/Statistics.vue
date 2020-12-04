@@ -4,8 +4,16 @@
       <Types :type="record.type" @update:type="onUpdateType" />
       <ECharts :options="options" ref="EChart"></ECharts>
       <div class="chooseMonth">
-        <button @click="lastMonth">上月</button>
-        <button @click="nextMonth">下月</button>
+        <button @click="lastMonth">上一月</button>
+        <button
+          @click="nextMonth"
+          v-show="
+            currentMonth !== (new Date().getMonth() + 1).toString() ||
+            currentYear !== new Date().getFullYear().toString()
+          "
+        >
+          下一月
+        </button>
       </div>
     </Layout>
   </div>
@@ -69,13 +77,19 @@ export default class Statistics extends Vue {
     this.count();
   }
 
+  mounted() {
+    this.loading();
+  }
+
   loading() {
     (this.$refs.EChart as any).showLoading({
       text: "暂无数据",
-      color: "#f12",
-      fontSize: 18,
+      color: "#696969",
       textColor: "#8a8e91",
+      fontSize: "20px",
       maskColor: "rgba(255, 255, 255, 0.1)",
+      lineWidth: 5,
+      spinnerRadius: 15,
     });
 
     if (this.data.length !== 0) {
@@ -90,7 +104,8 @@ export default class Statistics extends Vue {
       let itemYear = item.createTime?.split("-")[0];
       let itemMonth = item.createTime?.split("-")[1];
 
-      let isThisMonth = this.currentMonth === itemMonth && this.currentYear === itemYear;
+      let isThisMonth =
+        this.currentMonth === itemMonth && this.currentYear === itemYear;
 
       if (isThisMonth) {
         this.totalTags[item.type].map((tag: string) => {
@@ -109,7 +124,9 @@ export default class Statistics extends Vue {
     });
 
     this.data = this.totalData[this.record.type];
-    this.titleText = `${this.currentYear}年${this.currentMonth}月${this.record.type === "-" ? "支出" : "收入"}分类占比`;
+    this.titleText = `${this.currentYear}年${this.currentMonth}月${
+      this.record.type === "-" ? "支出" : "收入"
+    }分类占比`;
   }
 
   lastMonth() {

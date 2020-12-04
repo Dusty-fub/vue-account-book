@@ -86,4 +86,18 @@ export default class Money extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.output {
+  height: 15%;
+  font-size: 2em;
+  color: #36292f;
+  font-family: Consolas, monospace;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  padding-right: 0.3em;
+  box-shadow: inset 0 -5px 5px -5px fade-out($color: #000000, $amount: 0.5),
+    inset 0 5px 5px -5px fade-out($color: #000000, $amount: 0.5);
+}
+</style>

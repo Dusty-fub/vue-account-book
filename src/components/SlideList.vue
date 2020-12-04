@@ -30,22 +30,22 @@ export default class SlideList extends Vue {
   dropDownMaxDistance: number = 0;
   dropUpMaxDistance: number = 0;
 
+  //init
   @Watch("liHeight")
   onliHeightChanged(val: number, oldVal: number) {
     this.touch.style.webkitTransform =
       "translate3d(0," + this.position * this.liHeight + "px, 0)";
-
     this.touch.style.transform = `translate3d(0,  ${
       this.position * this.liHeight
     }px, 0)`;
     this.confirm();
   }
 
+  //daysOfMonth有可能会发生变化
   @Watch("DataSource")
   onDataChanged(val: string[], oldVal: string[]) {
     this.dropDownMaxDistance = 3 * this.liHeight;
     this.dropUpMaxDistance = (val.length - 3) * this.liHeight;
-
     this.touchEnd();
   }
 

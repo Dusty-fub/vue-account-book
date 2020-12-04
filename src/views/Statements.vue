@@ -189,6 +189,8 @@ export default class Labels extends Vue {
 
     this.barTimes = this.dayTimes;
     this.barValues = this.dayCostData;
+
+    this.loading();
   }
 
   getBarData() {
@@ -279,7 +281,7 @@ export default class Labels extends Vue {
   get options() {
     return {
       grid: {
-        left: 50,
+        left: 30,
         right: 30,
       },
       xAxis: {
@@ -387,6 +389,35 @@ export default class Labels extends Vue {
       }
 
       this.costOrIncome = "cost";
+    }
+  }
+
+  loading() {
+    (this.$refs.EChart as any).showLoading({
+      text: "暂无数据",
+      color: "#696969",
+      textColor: "#8a8e91",
+      fontSize: "20px",
+      maskColor: "rgba(255, 255, 255, 0.1)",
+      lineWidth: 5,
+      spinnerRadius: 15,
+    });
+
+    (this.$refs.EChart as any).$el.style.width = "100%";
+    (this.$refs.EChart as any).resize({
+      width: (this.$refs.EChart as any).$el.offsetWidth,
+    });
+
+    if (this.barValues.length !== 0) {
+      (this.$refs.EChart as any).$el.style.width = "390%";
+      (this.$refs.EChart as any).resize({
+        width: (this.$refs.EChart as any).$el.offsetWidth,
+      });
+      setTimeout(() => {
+        const div = this.$refs.chartWrapper as HTMLDivElement;
+        div.scrollLeft = div.scrollWidth;
+      });
+      (this.$refs.EChart as any).hideLoading();
     }
   }
 }

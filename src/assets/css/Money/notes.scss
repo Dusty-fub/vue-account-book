@@ -4,12 +4,16 @@
 .notes {
   background : #F5F5F5;
   display : block;
-  font-size : 14px;
-  padding : 0 16px;
+  font-size : 1em;
+  padding : 8px 16px 8px;
+  box-shadow : 5px -1px 2px #E2E1E4;
   .name {
     padding-right : 16px;
   }
   input {
     padding : 4px;
+  }
+  &:visited {
+    background-color : #E2E1E4;
   }
 }

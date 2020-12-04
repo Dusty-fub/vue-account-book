@@ -1,6 +1,6 @@
 <template>
   <div class="RecordDate">
-    <div>
+    <div class="dateDisplay">
       <button @click="showCate">
         {{ this.yearIndex + 1900 }}-{{ this.monthIndex + 1 }}-{{ dayIndex }}
       </button>
@@ -135,6 +135,11 @@ export default class ReacordDate extends Vue {
 </script>
 
 <style scoped lang="scss">
+.dateDisplay {
+  padding: 1em 0;
+  box-shadow: 1px 2px 5px #2486b9;
+}
+
 .wrap {
   display: none;
 }
@@ -145,70 +150,70 @@ export default class ReacordDate extends Vue {
   bottom: 0;
   right: 0;
   left: 0;
-}
 
-.grayLayer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: hsla(0, 0%, 50%, 70%);
-  z-index: 2;
-  display: block;
-}
+  .grayLayer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: hsla(0, 0%, 50%, 70%);
+    z-index: 2;
+    display: block;
+  }
 
-.content {
-  position: relative;
-  z-index: 4;
-  background-color: #ffffff;
-}
-.confirmWrap {
-  display: flex;
-  justify-content: flex-end;
-  box-shadow: inset -3px -1px 1px hsl(0, 0%, 80%);
-}
-.confirm {
-  font-size: 16px;
-  background-color: #ffffff;
-  padding: 3px;
-  padding-left: 9px;
-  padding-right: 6px;
-  box-shadow: -3px 3px 3px hsl(0, 0%, 90%);
-}
+  .content {
+    position: relative;
+    z-index: 4;
+    background-color: #ffffff;
 
-.selectPanel {
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  justify-content: space-evenly;
-}
+    .confirmWrap {
+      display: flex;
+      justify-content: flex-end;
+      box-shadow: inset -3px -1px 1px hsl(0, 0%, 80%);
+      .confirm {
+        font-size: 16px;
+        background-color: #ffffff;
+        padding: 3px;
+        padding-left: 9px;
+        padding-right: 6px;
+        box-shadow: -3px 3px 3px hsl(0, 0%, 90%);
+      }
+    }
 
-.selectLine {
-  height: 40px;
-  width: 100%;
-  position: absolute;
-  top: 80px;
-  pointer-events: none;
-  box-shadow: 1px 3px 7px hsl(0, 0%, 83%), 1px -3px 7px hsl(0, 0%, 83%);
-}
-.Mask {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  pointer-events: none;
-  background: -webkit-linear-gradient(
-    top,
-    #ffffff,
-    rgba(255, 255, 255, 0),
-    #ffffff
-  );
-  background: linear-gradient(
-    to bottom,
-    #ffffff,
-    rgba(255, 255, 255, 0),
-    #ffffff
-  );
+    .selectPanel {
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      justify-content: space-evenly;
+      .selectLine {
+        height: 40px;
+        width: 100%;
+        position: absolute;
+        top: 80px;
+        pointer-events: none;
+        box-shadow: 1px 3px 7px hsl(0, 0%, 83%), 1px -3px 7px hsl(0, 0%, 83%);
+      }
+      .Mask {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        pointer-events: none;
+        background: -webkit-linear-gradient(
+          top,
+          #ffffff,
+          rgba(255, 255, 255, 0),
+          #ffffff
+        );
+        background: linear-gradient(
+          to bottom,
+          #ffffff,
+          rgba(255, 255, 255, 0),
+          #ffffff
+        );
+      }
+    }
+  }
 }
 </style>
