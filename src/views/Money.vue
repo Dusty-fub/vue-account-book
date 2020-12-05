@@ -1,12 +1,26 @@
 <template>
   <div class="wrapper">
     <Layout>
-      <Types :type="record.type" @update:type="onUpdateType" />
-      <div class="output">{{ output }}</div>
-      <Tags :dataSource.sync="tags" @update:value="onUpdateTags" />
+      <Types
+        :type="record.type"
+        @update:type="onUpdateType"
+      />
+      <div class="output">
+        <span>数值：</span>
+        <span>
+          {{ output }}
+        </span>
+      </div>
+      <Tags
+        :dataSource.sync="tags"
+        @update:value="onUpdateTags"
+      />
       <RecordDate @update:date="onUpdateDate" />
       <Notes @update:value="onUpdateNotes" />
-      <NumberPad @update:value="onUpdateAmount" @confirmRecord="saveRecord" />
+      <NumberPad
+        @update:value="onUpdateAmount"
+        @confirmRecord="saveRecord"
+      />
     </Layout>
   </div>
 </template>
@@ -88,16 +102,24 @@ export default class Money extends Vue {
 
 <style lang="scss" scoped>
 .output {
-  height: 15%;
-  font-size: 2em;
-  color: #36292f;
-  font-family: Consolas, monospace;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 100%;
-  padding-right: 0.3em;
-  box-shadow: inset 0 -5px 5px -5px fade-out($color: #000000, $amount: 0.5),
-    inset 0 5px 5px -5px fade-out($color: #000000, $amount: 0.5);
+  height : 69.5px;
+  margin-bottom : 80px;
+  color : #36292F;
+  display : flex;
+  justify-content : flex-start;
+  align-items : center;
+  width : 100%;
+
+  & span:first-child {
+    font-size : 16px;
+    padding-left : 46.5px;
+  }
+
+  & span:last-child {
+    font-size : 2.5em;
+    padding-left : 5px;
+    font-family : Consolas, monospace;
+  }
 }
+
 </style>

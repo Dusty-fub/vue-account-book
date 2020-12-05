@@ -1,17 +1,30 @@
 @import '~@/assets/css/reset.scss';
 @import '~@/assets/css/helper.scss';
-
+.typeWrap {
+  text-align : left;
+  margin : 0 1em;
+  box-shadow : 0 1px 2px #FCF6E1;
+  > span {
+    padding-left : 30.5px;
+  }
+}
 .types {
-  background-color : #C4C4C4;
-  display : flex;
+  background-color : #FFFBF7;
+  display : inline-flex;
   font-size : 24px;
-  > li {
-    width : 50%;
+  height : 65px;
+  vertical-align : middle;
+  align-items : center;
+  > button {
     line-height : 60px;
-    padding-top : 4px;
-    border-bottom : 4px solid rgba(0, 0, 0, 0);
+    padding-left : 5px;
+
     &.selected {
-      border-bottom : 4px solid rgba(0, 0, 0, 1);
+      color : #C13026;
+      box-shadow : 0 1px 2px #FCF6E1;
     }
+  }
+  > span {
+    padding-left : .2em;
   }
 }

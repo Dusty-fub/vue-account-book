@@ -1,9 +1,17 @@
 <template>
-  <div>
-    <ul class="types">
-      <li :class="type === '-' && 'selected'" @click="selectType('-')">支出</li>
-      <li :class="type === '+' && 'selected'" @click="selectType('+')">收入</li>
-    </ul>
+  <div class="typeWrap">
+    <span>类型：</span>
+    <div class="types">
+      <button
+        :class="type === '-' && 'selected'"
+        @click="selectType('-')"
+      > 支出 </button>
+      <span> / </span>
+      <button
+        :class="type === '+' && 'selected'"
+        @click="selectType('+')"
+      >收入</button>
+    </div>
   </div>
 </template>
 

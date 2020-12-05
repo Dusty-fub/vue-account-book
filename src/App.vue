@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 @Component
@@ -26,7 +26,7 @@ export default class extends Vue {
 body {
   font-family : $font-hei;
   line-height : 1.5;
-  background-color : #F5F5F5;
+  background-color : #FFFBF7;
 }
 
 #app {

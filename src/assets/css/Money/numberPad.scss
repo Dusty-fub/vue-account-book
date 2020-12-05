@@ -1,10 +1,13 @@
 @import '~@/assets/css/reset.scss';
 @import '~@/assets/css/helper.scss';
 
+.btnWrap {
+  height : 250px;
+  padding : 0 1em 1em;
+}
 .numberPad {
-  flex-grow : 1;
-
   .btns {
+    border : .5px solid #FCF6E1;
     height : 100%;
     @extend %clearfix;
     button {
@@ -17,27 +20,31 @@
       height : 50%;
       float : right;
     }
+    & button {
+      background-color : #FFFBF7;
+      border : .5px solid #FCF6E1;
+    }
 
-    & button:nth-child(1) {
-      background-color : #F2F2F2;
-    }
-    & button:nth-child(2), & button:nth-child(5) {
-      background-color : #D3D3D3;
-    }
-    & button:nth-child(3), & button:nth-child(6), & button:nth-child(8) {
-      background-color : #C1C1C1;
-    }
-    & button:nth-child(12), & button:nth-child(7), & button:nth-child(9) {
-      background-color : #B8B8B8;
-    }
-    & button:nth-child(4), & button:nth-child(10), & button:nth-child(13) {
-      background-color : #A9A9A9;
-    }
-    & button:nth-child(14) {
-      background-color : #9A9A9A;
-    }
-    & button:nth-child(11) {
-      background-color : #8B8B8B;
-    }
+    // & button:nth-child(1) {
+    //   background-color : #FFFBF7;
+    // }
+    // & button:nth-child(2), & button:nth-child(5) {
+    //   background-color : #FEFAF6;
+    // }
+    // & button:nth-child(3), & button:nth-child(6), & button:nth-child(8) {
+    //   background-color : #FEFAF3;
+    // }
+    // & button:nth-child(12), & button:nth-child(7), & button:nth-child(9) {
+    //   background-color : #FDF9F1;
+    // }
+    // & button:nth-child(4), & button:nth-child(10), & button:nth-child(13) {
+    //   background-color : #FDF8E9;
+    // }
+    // & button:nth-child(14) {
+    //   background-color : #FCF7E5;
+    // }
+    // & button:nth-child(11) {
+    //   background-color : #FCF6E1;
+    // }
   }
 }

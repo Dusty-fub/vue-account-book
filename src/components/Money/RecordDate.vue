@@ -1,17 +1,25 @@
 <template>
   <div class="RecordDate">
     <div class="dateDisplay">
-      <button @click="showCate">
-        {{ this.yearIndex + 1900 }}-{{ this.monthIndex + 1 }}-{{ dayIndex }}
-      </button>
+      <span>时间：</span>
+      <button @click="showCate">{{ this.yearIndex + 1900 }}-{{ this.monthIndex + 1 }}-{{ dayIndex }}</button>
     </div>
     <div :class="{ wrap: true, showWrap: showCateFlag }">
-      <div class="grayLayer" @click="clickGrayLayer"></div>
+      <div
+        class="grayLayer"
+        @click="clickGrayLayer"
+      ></div>
       <div class="content">
         <div class="confirmWrap">
-          <button class="confirm" @click="confirm">确认</button>
+          <button
+            class="confirm"
+            @click="confirm"
+          >确认</button>
         </div>
-        <div class="selectPanel" ref="selectPanel">
+        <div
+          class="selectPanel"
+          ref="selectPanel"
+        >
           <SlideList
             :DataSource="yearDataSource"
             :confirmIndex.sync="yearIndex"
@@ -136,84 +144,93 @@ export default class ReacordDate extends Vue {
 
 <style scoped lang="scss">
 .dateDisplay {
-  padding: 1em 0;
-  box-shadow: 1px 2px 5px #2486b9;
+  height : 45px;
+  padding : 1em 0;
+  text-align : left;
+  line-height : 13px;
+  > span {
+    padding-left : 46.5px;
+  }
+  > button {
+    padding-left : 5px;
+  }
 }
 
 .wrap {
-  display: none;
+  display : none;
 }
 
 .showWrap {
-  display: block;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
+  display : block;
+  position : absolute;
+  bottom : 0;
+  right : 0;
+  left : 0;
 
   .grayLayer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: hsla(0, 0%, 50%, 70%);
-    z-index: 2;
-    display: block;
+    position : fixed;
+    top : 0;
+    left : 0;
+    bottom : 0;
+    right : 0;
+    background : hsla(0, 0%, 50%, 70%);
+    z-index : 2;
+    display : block;
   }
 
   .content {
-    position: relative;
-    z-index: 4;
-    background-color: #ffffff;
+    position : relative;
+    z-index : 4;
+    background-color : #FFFFFF;
 
     .confirmWrap {
-      display: flex;
-      justify-content: flex-end;
-      box-shadow: inset -3px -1px 1px hsl(0, 0%, 80%);
+      display : flex;
+      justify-content : flex-end;
+      box-shadow : inset -3px -1px 1px hsl(0, 0%, 80%);
       .confirm {
-        font-size: 16px;
-        background-color: #ffffff;
-        padding: 3px;
-        padding-left: 9px;
-        padding-right: 6px;
-        box-shadow: -3px 3px 3px hsl(0, 0%, 90%);
+        font-size : 16px;
+        background-color : #FFFFFF;
+        padding : 3px;
+        padding-left : 9px;
+        padding-right : 6px;
+        box-shadow : -3px 3px 3px hsl(0, 0%, 90%);
       }
     }
 
     .selectPanel {
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      justify-content: space-evenly;
+      overflow : hidden;
+      position : relative;
+      display : flex;
+      justify-content : space-evenly;
       .selectLine {
-        height: 40px;
-        width: 100%;
-        position: absolute;
-        top: 80px;
-        pointer-events: none;
-        box-shadow: 1px 3px 7px hsl(0, 0%, 83%), 1px -3px 7px hsl(0, 0%, 83%);
+        height : 40px;
+        width : 100%;
+        position : absolute;
+        top : 80px;
+        pointer-events : none;
+        box-shadow : 1px 3px 7px hsl(0, 0%, 83%), 1px -3px 7px hsl(0, 0%, 83%);
       }
       .Mask {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-        pointer-events: none;
-        background: -webkit-linear-gradient(
-          top,
-          #ffffff,
-          rgba(255, 255, 255, 0),
-          #ffffff
+        position : absolute;
+        top : 0;
+        bottom : 0;
+        width : 100%;
+        pointer-events : none;
+        background : -webkit-linear-gradient(
+        top,
+        #FFFFFF,
+        rgba(255, 255, 255, 0),
+        #FFFFFF
         );
-        background: linear-gradient(
-          to bottom,
-          #ffffff,
-          rgba(255, 255, 255, 0),
-          #ffffff
+        background : linear-gradient(
+        to bottom,
+        #FFFFFF,
+        rgba(255, 255, 255, 0),
+        #FFFFFF
         );
       }
     }
   }
 }
+
 </style>

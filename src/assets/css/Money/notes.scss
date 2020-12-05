@@ -2,16 +2,20 @@
 @import '~@/assets/css/helper.scss';
 
 .notes {
-  background : #F5F5F5;
+  height : 45px;
   display : block;
   font-size : 1em;
-  padding : 8px 16px 8px;
-  box-shadow : 5px -1px 2px #E2E1E4;
+  padding : 8px 0 8px;
+  margin : 0 1em;
+  box-shadow : 0 -1px 3px #FCF6E1;
+  text-align : left;
   .name {
-    padding-right : 16px;
+    display : inline-flex;
+    padding-left : 30.5px;
+    line-height : 29px;
   }
   input {
-    padding : 4px;
+    padding : 5px;
   }
   &:visited {
     background-color : #E2E1E4;
