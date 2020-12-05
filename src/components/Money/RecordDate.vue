@@ -153,6 +153,7 @@ export default class ReacordDate extends Vue {
   }
   > button {
     padding-left : 5px;
+    color : #C13026;
   }
 }
 

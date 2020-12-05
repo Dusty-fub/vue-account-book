@@ -119,6 +119,7 @@ export default class Money extends Vue {
     font-size : 2.5em;
     padding-left : 5px;
     font-family : Consolas, monospace;
+    color : #C13026;
   }
 }
 
