@@ -1,14 +1,24 @@
 <template>
   <div>
-    <button class="chooseRange" @click="lastRange">上一个</button>
-    <button class="chooseRange" @click="nextRange">下一个</button>
+    <div class="chooseRangeWrap">
+      <button class="chooseRange" @click="lastRange">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-back"></use>
+        </svg>
+      </button>
+      <button class="chooseRange" @click="nextRange">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-forward"></use>
+        </svg>
+      </button>
+    </div>
+
     <ol>
       <li v-for="(item, index) in this.$store.state.dayItems" :key="index">
-        <div>
+        <div class="tag">
           <span>{{ item.tag }}</span>
-          <span>{{ item.createTime }}</span>
         </div>
-        <div>
+        <div class="amount">
           <span>
             {{ item.type === "+" ? "收入:" : "支出:" }}
           </span>
@@ -16,7 +26,7 @@
             {{ item.amount }}
           </span>
         </div>
-        <div class="note"></div>
+        <div class="note">{{ item.notes }}</div>
       </li>
     </ol>
   </div>
@@ -80,13 +90,42 @@ export default class extends vue {
 </script>
 <style lang="scss" scoped>
 li {
-  box-shadow: inset 0 -1px 2px #ddd, inset 0 1px 2px #ddd;
   padding: 0.5em 0;
 }
 
+.chooseRangeWrap {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 2.7em;
+}
+
 .chooseRange {
-  padding: 1em 2em;
-  box-shadow: 1px 1px 3px #900;
-  margin: 1em 1em;
+  margin: 1em 0;
+  padding: 0 15px 0 5px;
+  background-color: #fffbf7;
+
+  > .icon {
+    font-size: 26px;
+    color: #332e36;
+  }
+}
+li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 3em;
+
+  .tag {
+    font-size: 20px;
+  }
+
+  .amount {
+    font-size: 20px;
+    color: #c13026;
+  }
+  .note {
+    font-size: 13px;
+    margin-right: 3em;
+  }
 }
 </style>

@@ -1,10 +1,20 @@
 <template>
   <div class="wrapper">
     <Layout>
-      <Types :type="record.type" @update:type="onUpdateType" />
-      <ECharts :options="options" ref="EChart"></ECharts>
+      <Types
+        :type="record.type"
+        @update:type="onUpdateType"
+      />
       <div class="chooseMonth">
-        <button @click="lastMonth">上一月</button>
+        <span>月份：</span>
+        <button @click="lastMonth">
+          <svg
+            class="icon"
+            aria-hidden="true"
+          >
+            <use xlink:href="#icon-back"></use>
+          </svg>
+        </button>
         <button
           @click="nextMonth"
           v-show="
@@ -12,9 +22,19 @@
             currentYear !== new Date().getFullYear().toString()
           "
         >
-          下一月
+          <svg
+            class="icon"
+            aria-hidden="true"
+          >
+            <use xlink:href="#icon-forward"></use>
+          </svg>
         </button>
       </div>
+      <ECharts
+        :options="options"
+        ref="EChart"
+      ></ECharts>
+
     </Layout>
   </div>
 </template>
@@ -84,8 +104,8 @@ export default class Statistics extends Vue {
   loading() {
     (this.$refs.EChart as any).showLoading({
       text: "暂无数据",
-      color: "#696969",
-      textColor: "#8a8e91",
+      color: "#332e36",
+      textColor: "#c13026",
       fontSize: "20px",
       maskColor: "rgba(255, 255, 255, 0.1)",
       lineWidth: 5,
@@ -154,10 +174,11 @@ export default class Statistics extends Vue {
     return {
       title: {
         text: this.titleText,
-        left: "center",
+        left: 40.5,
         top: 50,
         textStyle: {
-          color: "#ccc",
+          color: "#c13026",
+          fontSize: 22,
         },
       },
       series: {
@@ -186,19 +207,30 @@ export default class Statistics extends Vue {
 
 <style lang="scss" scoped>
 .echarts {
-  width: 100%;
-  height: 80vh;
-
-  margin: 0 auto;
+  width : 100%;
+  height : 60vh;
+  margin : 0 auto;
 }
 
 .chooseMonth {
-  display: flex;
-  justify-content: space-around;
+  display : flex;
+  justify-content : flex-start;
+  margin : 1em 1em 3em;
+  > span {
+    padding-left : 30.5px;
+    line-height : 28px;
+    vertical-align : middle;
+  }
+
   > button {
-    padding: 1em 2em;
-    box-shadow: 2px 2px 4px #999;
-    background-color: lighten(#628, 30%);
+    padding : 0 15px 0 5px;
+    background-color : #FFFBF7;
+
+    > .icon {
+      font-size : 26px;
+      color : #332E36;
+    }
   }
 }
+
 </style>

@@ -2,24 +2,21 @@
   <div class="wrapper">
     <Layout>
       <template v-if="isPanelVisible">
-        <div class="changeBar">
-          <button @click="changeBarTime">
-            {{ dayOrMonth === "day" ? "每日对比" : "月度对比" }}
-          </button>
-          <button @click="changeBarType">
-            {{ costOrIncome === "cost" ? "支出" : "收入" }}
-          </button>
-        </div>
         <div class="echartWrap" ref="chartWrapper">
           <ECharts :options="options" ref="EChart"></ECharts>
         </div>
+        <div class="changeBar">
+          <button @click="changeBarType">
+            {{ costOrIncome === "cost" ? "支出" : "收入" }}
+          </button>
+
+          <button @click="changeBarTime">
+            {{ dayOrMonth === "day" ? "每日对比" : "月度对比" }}
+          </button>
+        </div>
 
         <div class="flowRange">
-          <button
-            v-for="(item, index) in rangeList"
-            :key="index"
-            @click="showFlow(index)"
-          >
+          <button v-for="(item, index) in rangeList" :key="index" @click="showFlow(index)">
             <span>
               {{ item }}
             </span>
@@ -91,10 +88,7 @@ export default class Labels extends Vue {
   @Watch("recordList")
   updateNumber() {
     let currentDaysOfWeek = Array.from(new Array(7)).map((_, i) => {
-      const date = new Date(
-        Date.now() +
-          (i - ((this.currentDayOfWeek + 6) % 7)) * 1000 * 60 * 60 * 24
-      );
+      const date = new Date(Date.now() + (i - ((this.currentDayOfWeek + 6) % 7)) * 1000 * 60 * 60 * 24);
       return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     });
 
@@ -114,10 +108,7 @@ export default class Labels extends Vue {
         this.$store.state.thisWeekItems.push(item);
       }
 
-      if (
-        itemMonth === this.currentMonth.toString() &&
-        itemYear === this.currentYear.toString()
-      ) {
+      if (itemMonth === this.currentMonth.toString() && itemYear === this.currentYear.toString()) {
         currentForm[2] = true;
         this.$store.state.thisMonthItems.push(item);
       }
@@ -171,14 +162,7 @@ export default class Labels extends Vue {
     );
     const div = this.$refs.chartWrapper as HTMLDivElement;
     div.scrollLeft = div.scrollWidth;
-    let {
-      monthTimes,
-      monthCostData,
-      monthIncomeData,
-      dayTimes,
-      dayCostData,
-      dayIncomeData,
-    } = this.getBarData();
+    let { monthTimes, monthCostData, monthIncomeData, dayTimes, dayCostData, dayIncomeData } = this.getBarData();
     this.dayTimes = dayTimes;
     this.dayCostData = dayCostData;
     this.dayIncomeData = dayIncomeData;
@@ -215,9 +199,7 @@ export default class Labels extends Vue {
       let chosedMonth = new Date().getMonth() + 1;
 
       Array.from(new Array(31)).map((_, index) => {
-        let newDate = `${new Date(now).getFullYear()}-${
-          new Date(now).getMonth() + 1
-        }-${new Date(now).getDate()}`;
+        let newDate = `${new Date(now).getFullYear()}-${new Date(now).getMonth() + 1}-${new Date(now).getDate()}`;
 
         times[30 - index] = newDate;
 
@@ -287,7 +269,7 @@ export default class Labels extends Vue {
       xAxis: {
         type: "category",
         axisTick: { alignWithLabel: true },
-        axisLine: { lineStyle: { color: "#666" } },
+        axisLine: { lineStyle: { color: "#332e36" } },
         axisLabel: {
           formatter: function (value: string, index: number) {
             return value.substr(5);
@@ -311,8 +293,8 @@ export default class Labels extends Vue {
           symbolSize: 12,
           itemStyle: {
             borderWidth: 1,
-            color: "#666",
-            borderColor: "#666",
+            color: "#332e36",
+            borderColor: "#332e36",
           },
           data: this.barValues,
           type: "bar",
@@ -367,6 +349,7 @@ export default class Labels extends Vue {
         div.scrollLeft = div.scrollWidth;
       });
     }
+    this.loading();
   }
 
   changeBarType() {
@@ -390,13 +373,14 @@ export default class Labels extends Vue {
 
       this.costOrIncome = "cost";
     }
+    this.loading();
   }
 
   loading() {
     (this.$refs.EChart as any).showLoading({
       text: "暂无数据",
-      color: "#696969",
-      textColor: "#8a8e91",
+      color: "#332e36",
+      textColor: "#c13026",
       fontSize: "20px",
       maskColor: "rgba(255, 255, 255, 0.1)",
       lineWidth: 5,
@@ -409,7 +393,11 @@ export default class Labels extends Vue {
     });
 
     if (this.barValues.length !== 0) {
-      (this.$refs.EChart as any).$el.style.width = "390%";
+      if (this.dayOrMonth === "day") {
+        (this.$refs.EChart as any).$el.style.width = "390%";
+      } else {
+        (this.$refs.EChart as any).$el.style.width = "150%";
+      }
       (this.$refs.EChart as any).resize({
         width: (this.$refs.EChart as any).$el.offsetWidth,
       });
@@ -427,41 +415,49 @@ export default class Labels extends Vue {
   display: flex;
   flex-direction: column;
   > button {
-    padding: 0.5em;
+    height: 50px;
     display: inline-flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    box-shadow: inset 0 -1px hsl(0, 20%, 50%), inset 0 1px hsl(0, 20%, 50%);
-    &:last-child {
-      box-shadow: inset 0 1px hsl(0, 20%, 50%), inset 0 -2px hsl(0, 20%, 50%);
-    }
+    margin: 0 30px 0.5em 30px;
+    box-shadow: 0 -1px 2px #fcf6e1;
+
     > span {
       font-size: 20px;
     }
-    .accountNumber {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: flex-start;
-      vertical-align: middle;
+
+    > div {
+      padding-left: 2em;
+      > div.accountNumber {
+        margin-right: 1em;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+        vertical-align: middle;
+      }
     }
   }
 }
 .flowTopNav {
-  box-shadow: 0 1px #aaa;
+  box-shadow: 0 1px #fcf6e1;
   display: flex;
   align-items: center;
+  height: 50px;
   position: relative;
   > svg {
     font-size: 24px;
+    margin-left: 10px;
   }
   > button {
-    font-size: 18px;
-    line-height: 18px;
+    font-size: 20px;
+    line-height: 20px;
   }
   > span {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    color: #c13026;
+    font-size: 20px;
   }
 }
 
@@ -471,21 +467,28 @@ export default class Labels extends Vue {
 
 .echartWrap {
   max-width: 100%;
-  flex: 1;
+  height: 270px;
   overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .echarts {
-  height: 100%;
+  height: 270px;
   width: 390%;
 }
 
 .changeBar {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-end;
+  padding-right: 20px;
   > button {
-    padding: 0.5em;
-    border: 1px dashed #531;
+    color: #c13026;
+    padding: 0 0.5em;
+    font-size: 22px;
   }
+  margin-top: -15px;
+  margin-bottom: 55px;
 }
 </style>

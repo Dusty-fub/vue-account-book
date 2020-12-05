@@ -33,7 +33,7 @@ body {
   -webkit-font-smoothing : antialiased;
   -moz-osx-font-smoothing : grayscale;
   text-align : center;
-  color : #333333;
+  color : #332E36;
 }
 
 .icon {
