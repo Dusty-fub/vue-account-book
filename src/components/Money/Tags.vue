@@ -7,16 +7,40 @@
       </button>
     </div>
     <div :class="{ wrap: true, showWrap: showCateFlag }">
-      <div class="grayLayer" @click.stop="clickGrayLayer"></div>
+      <div
+        class="grayLayer"
+        @click.stop="clickGrayLayer"
+      ></div>
       <div class="content">
         <div class="topButtonWrap">
           <button @click="createTag">新增标签</button>
-          <button class="confirm" @click="confirm">确认</button>
+          <button
+            class="confirm"
+            @click="confirm"
+          >确认</button>
         </div>
-        <div class="selectPanel" ref="selectPanel">
-          <div class="touch" ref="touch" @touchstart="touchStart" @touchmove.prevent="touchMove" @touchend="touchEnd">
-            <ul class="current" ref="touchUl" v-show="showCateFlag">
-              <li v-for="item in dataSource" :key="item" @click="selectOrCancel(item)" :class="{ selected: selectedTag === item }">
+        <div
+          class="selectPanel"
+          ref="selectPanel"
+        >
+          <div
+            class="touch"
+            ref="touch"
+            @touchstart="touchStart"
+            @touchmove.prevent="touchMove"
+            @touchend="touchEnd"
+          >
+            <ul
+              class="current"
+              ref="touchUl"
+              v-show="showCateFlag"
+            >
+              <li
+                v-for="item in dataSource"
+                :key="item"
+                @click="selectOrCancel(item)"
+                :class="{ selected: selectedTag === item }"
+              >
                 {{ item }}
               </li>
             </ul>
@@ -78,7 +102,8 @@ export default class Tags extends Vue {
       const li = this.touchUl.childNodes[0] as HTMLLIElement;
       this.liHeight = li.offsetHeight;
       this.dropDownMaxDistance = 3 * this.liHeight;
-      this.dropUpMaxDistance = (this.touchUl.childNodes.length - 3) * this.liHeight;
+      this.dropUpMaxDistance =
+        (this.touchUl.childNodes.length - 3) * this.liHeight;
       this.selectPanel.style.height = this.liHeight * 5 + "px";
     });
   }
@@ -97,7 +122,7 @@ export default class Tags extends Vue {
 
     transformY = transformY.slice(0, -2);
 
-    this.confirmIndex = (80 - parseInt(transformY)) / 40;
+    this.confirmIndex = (100 - parseInt(transformY)) / 50;
 
     this.dataSource && this.selectOrCancel(this.dataSource[this.confirmIndex]);
   }
@@ -131,13 +156,17 @@ export default class Tags extends Vue {
     if (distance >= this.dropDownMaxDistance) {
       //下拉过度反弹
       this.touch.style.transition = "transform 0.2s linear";
-      this.touch.style.webkitTransform = "translate3d(0," + 2 * this.liHeight + "px, 0)";
-      this.touch.style.transform = "translate3d(0," + 2 * this.liHeight + "px, 0)";
+      this.touch.style.webkitTransform =
+        "translate3d(0," + 2 * this.liHeight + "px, 0)";
+      this.touch.style.transform =
+        "translate3d(0," + 2 * this.liHeight + "px, 0)";
     } else if (-distance > this.dropUpMaxDistance) {
       //上拉过度反弹
       this.touch.style.transition = "transform 0.2s linear";
-      this.touch.style.webkitTransform = "translate3d(0," + "-" + this.dropUpMaxDistance + "px, 0)";
-      this.touch.style.transform = "translate3d(0," + "-" + this.dropUpMaxDistance + "px, 0)";
+      this.touch.style.webkitTransform =
+        "translate3d(0," + "-" + this.dropUpMaxDistance + "px, 0)";
+      this.touch.style.transform =
+        "translate3d(0," + "-" + this.dropUpMaxDistance + "px, 0)";
     } else {
       this.touch.style.transition = "transform 0.2s linear";
       this.touch.style.webkitTransform = "translate3d(0," + distance + "px, 0)";
@@ -148,87 +177,94 @@ export default class Tags extends Vue {
 </script>
 
 <style scoped lang="scss">
-@import "~@/assets/css/Money/tags.scss";
+@import '~@/assets/css/Money/tags.scss';
 
 .wrap {
-  display: none;
+  display : none;
 }
 
 .showWrap {
-  display: block;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
+  display : block;
+  position : absolute;
+  bottom : 0;
+  right : 0;
+  left : 0;
 }
 
 .grayLayer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: hsla(0, 0%, 50%, 70%);
-  z-index: 4;
+  position : fixed;
+  top : 0;
+  left : 0;
+  bottom : 0;
+  right : 0;
+  background : hsla(0, 0%, 50%, 70%);
+  z-index : 4;
   // pointer-events: none;
-  display: block;
+  display : block;
 }
 
 .content {
-  position: relative;
-  z-index: 4;
-  background-color: #ffffff;
+  position : relative;
+  z-index : 4;
+  background-color : #FFFBF7;
 }
 .topButtonWrap {
-  display: flex;
-  justify-content: space-between;
-  box-shadow: inset -3px -1px 1px hsl(0, 0%, 80%);
+  display : flex;
+  justify-content : space-between;
+  box-shadow : inset 0 -1px 7px #FCF6E1;
   > :first-child {
-    padding-left: 5px;
+    font-size : 16px;
+    padding : 8px;
+    padding-left : 19px;
+    padding-right : 29px;
+    border : 1px solid #FCF6E1;
   }
 }
 .confirm {
-  font-size: 16px;
-  background-color: #ffffff;
-  padding: 3px;
-  padding-left: 9px;
-  padding-right: 6px;
-  box-shadow: -3px 3px 3px hsl(0, 0%, 90%);
+  font-size : 16px;
+  padding : 8px;
+  padding-left : 29px;
+  padding-right : 19px;
+  border : 1px solid #FCF6E1;
 }
 
 .selectPanel {
-  overflow: hidden;
-  position: relative;
+  overflow : hidden;
+  position : relative;
 }
 
 .touch {
-  width: auto;
-  position: relative;
-  background: -webkit-linear-gradient(top, #ffffff, rgba(255, 255, 255, 0), #ffffff);
-  background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0), #ffffff);
+  width : auto;
+  position : relative;
 }
 
 .touch ul li {
-  height: 40px;
-  text-align: center;
-  line-height: 40px;
+  height : 50px;
+  text-align : center;
+  line-height : 50px;
 }
 
 .selectLine {
-  height: 40px;
-  width: 100%;
-  position: absolute;
-  top: 80px;
-  pointer-events: none;
-  box-shadow: 1px 3px 7px hsl(0, 0%, 83%), 1px -3px 7px hsl(0, 0%, 83%);
+  height : 50px;
+  width : 100%;
+  position : absolute;
+  top : 100px;
+  pointer-events : none;
+  box-shadow : 0 1px 3px #C13026, 0 -1px 3px #C13026;
 }
 .Mask {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  pointer-events: none;
-  background: -webkit-linear-gradient(top, #ffffff, rgba(255, 255, 255, 0), #ffffff);
-  background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0), #ffffff);
+  position : absolute;
+  top : 0;
+  bottom : 0;
+  width : 100%;
+  pointer-events : none;
+  background : linear-gradient(top, #FFFBF7, rgba(255, 255, 255, 0), #FFFBF7);
+  background : linear-gradient(
+  to bottom,
+  #FFFBF7,
+  rgba(255, 255, 255, 0),
+  #FFFBF7
+  );
 }
+
 </style>

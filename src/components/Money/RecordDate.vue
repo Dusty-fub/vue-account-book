@@ -181,19 +181,18 @@ export default class ReacordDate extends Vue {
   .content {
     position : relative;
     z-index : 4;
-    background-color : #FFFFFF;
+    background-color : #FFFBF7;
 
     .confirmWrap {
       display : flex;
       justify-content : flex-end;
-      box-shadow : inset -3px -1px 1px hsl(0, 0%, 80%);
+      box-shadow : inset 0 -1px 7px #FCF6E1;
       .confirm {
         font-size : 16px;
-        background-color : #FFFFFF;
-        padding : 3px;
-        padding-left : 9px;
-        padding-right : 6px;
-        box-shadow : -3px 3px 3px hsl(0, 0%, 90%);
+        padding : 8px;
+        padding-left : 29px;
+        padding-right : 19px;
+        border : 1px solid #FCF6E1;
       }
     }
 
@@ -203,12 +202,12 @@ export default class ReacordDate extends Vue {
       display : flex;
       justify-content : space-evenly;
       .selectLine {
-        height : 40px;
+        height : 50px;
         width : 100%;
         position : absolute;
-        top : 80px;
+        top : 100px;
         pointer-events : none;
-        box-shadow : 1px 3px 7px hsl(0, 0%, 83%), 1px -3px 7px hsl(0, 0%, 83%);
+        box-shadow : 0 1px 3px #C13026, 0 -1px 3px #C13026;
       }
       .Mask {
         position : absolute;
@@ -216,17 +215,17 @@ export default class ReacordDate extends Vue {
         bottom : 0;
         width : 100%;
         pointer-events : none;
-        background : -webkit-linear-gradient(
+        background : linear-gradient(
         top,
-        #FFFFFF,
+        #FFFBF7,
         rgba(255, 255, 255, 0),
-        #FFFFFF
+        #FFFBF7
         );
         background : linear-gradient(
         to bottom,
-        #FFFFFF,
+        #FFFBF7,
         rgba(255, 255, 255, 0),
-        #FFFFFF
+        #FFFBF7
         );
       }
     }

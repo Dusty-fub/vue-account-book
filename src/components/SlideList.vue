@@ -6,8 +6,14 @@
     @touchmove.prevent="touchMove"
     @touchend="touchEnd"
   >
-    <ul class="current" ref="touchUl">
-      <li v-for="item in DataSource" :key="item">
+    <ul
+      class="current"
+      ref="touchUl"
+    >
+      <li
+        v-for="item in DataSource"
+        :key="item"
+      >
         {{ item }}
       </li>
     </ul>
@@ -54,7 +60,7 @@ export default class SlideList extends Vue {
 
     if (transformY) {
       transformY = transformY.slice(0, -2);
-      this.$emit("update:confirmIndex", (80 - parseInt(transformY)) / 40);
+      this.$emit("update:confirmIndex", (100 - parseInt(transformY)) / 50);
     }
   }
 
@@ -112,53 +118,14 @@ export default class SlideList extends Vue {
 
 <style scoped lang="scss">
 .touch {
-  width: auto;
-  position: relative;
-  background: -webkit-linear-gradient(
-    top,
-    #ffffff,
-    rgba(255, 255, 255, 0),
-    #ffffff
-  );
-  background: linear-gradient(
-    to bottom,
-    #ffffff,
-    rgba(255, 255, 255, 0),
-    #ffffff
-  );
+  width : auto;
+  position : relative;
 }
 
 .touch ul li {
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
+  height : 50px;
+  line-height : 50px;
+  text-align : center;
 }
 
-.selectLine {
-  height: 40px;
-  width: 100%;
-  position: absolute;
-  top: 80px;
-  pointer-events: none;
-  box-shadow: 1px 3px 7px hsl(0, 0%, 83%), 1px -3px 7px hsl(0, 0%, 83%);
-}
-.Mask {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  pointer-events: none;
-  background: -webkit-linear-gradient(
-    top,
-    #ffffff,
-    rgba(255, 255, 255, 0),
-    #ffffff
-  );
-  background: linear-gradient(
-    to bottom,
-    #ffffff,
-    rgba(255, 255, 255, 0),
-    #ffffff
-  );
-}
 </style>
