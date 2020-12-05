@@ -1,16 +1,8 @@
 <template>
   <div>
     <div class="chooseRangeWrap">
-      <button class="chooseRange" @click="lastRange">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-back"></use>
-        </svg>
-      </button>
-      <button class="chooseRange" @click="nextRange">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-forward"></use>
-        </svg>
-      </button>
+      <button class="chooseRange" @click="lastRange">查看上一天</button>
+      <button class="chooseRange" @click="nextRange" v-show="todayAnchor !== 0">查看下一天</button>
     </div>
 
     <ol>
@@ -96,31 +88,30 @@ li {
 .chooseRangeWrap {
   display: flex;
   justify-content: flex-start;
-  margin-left: 2.7em;
+  margin-left: 3em;
 }
 
 .chooseRange {
   margin: 1em 0;
-  padding: 0 15px 0 5px;
+  margin-right: 15px;
   background-color: #fffbf7;
-
-  > .icon {
-    font-size: 26px;
-    color: #332e36;
-  }
+  font-size: 18px;
+  color: #332e36;
+  box-shadow: 0 1px 2px #fcf6e1;
 }
 li {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-left: 3em;
+  margin: 0 3em;
+  box-shadow: 0 1px 2px #fcf6e1;
 
   .tag {
-    font-size: 20px;
+    font-size: 17px;
   }
 
   .amount {
-    font-size: 20px;
+    font-size: 17px;
     color: #c13026;
   }
   .note {
