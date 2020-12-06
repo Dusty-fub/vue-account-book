@@ -1,7 +1,7 @@
 <template>
   <nav class="nav">
     <router-link to="/statements" active-class="selected">
-      <Icon name="#label" />
+      <Icon name="#flow" />
       <div>流水</div>
     </router-link>
     <router-link to="/money" active-class="selected">

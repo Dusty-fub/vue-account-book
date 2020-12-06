@@ -4,32 +4,17 @@
       <button class="chooseRange" @click="lastRange">查看上一天</button>
       <button class="chooseRange" @click="nextRange" v-show="todayAnchor !== 0">查看下一天</button>
     </div>
-
-    <ol>
-      <li v-for="(item, index) in this.$store.state.dayItems" :key="index">
-        <div class="tag">
-          <span>{{ item.tag }}</span>
-        </div>
-        <div class="amount">
-          <span>
-            {{ item.type === "+" ? "收入:" : "支出:" }}
-          </span>
-          <span>
-            {{ item.amount }}
-          </span>
-        </div>
-        <div class="note">{{ item.notes }}</div>
-      </li>
-    </ol>
+    <Flow :recordItems="this.$store.state.dayItems" :isday="true" />
   </div>
 </template>
 <script lang="ts">
 import vue from "vue";
 import { Component } from "vue-property-decorator";
-const ECharts: any = require("vue-echarts").default;
-import "echarts";
+import Flow from "./Flow.vue";
 
-@Component
+@Component({
+  components: { Flow },
+})
 export default class extends vue {
   recordList = this.$store.state.recordList;
 
@@ -81,42 +66,17 @@ export default class extends vue {
 }
 </script>
 <style lang="scss" scoped>
-li {
-  padding: 0.5em 0;
-}
-
 .chooseRangeWrap {
   display: flex;
   justify-content: flex-start;
   margin-left: 3em;
-}
-
-.chooseRange {
-  margin: 1em 0;
-  margin-right: 15px;
-  background-color: #fffbf7;
-  font-size: 18px;
-  color: #332e36;
-  box-shadow: 0 1px 2px #fcf6e1;
-}
-li {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 0 3em;
-  box-shadow: 0 1px 2px #fcf6e1;
-
-  .tag {
-    font-size: 17px;
-  }
-
-  .amount {
-    font-size: 17px;
-    color: #c13026;
-  }
-  .note {
-    font-size: 13px;
-    margin-right: 3em;
+  .chooseRange {
+    margin: 1em 0;
+    margin-right: 15px;
+    background-color: #fffbf7;
+    font-size: 18px;
+    color: #332e36;
+    box-shadow: 0 1px 2px #fcf6e1;
   }
 }
 </style>
