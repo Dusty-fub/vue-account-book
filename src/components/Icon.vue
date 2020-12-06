@@ -6,7 +6,6 @@
 
 <script lang="ts" scoped>
 let importAll = (requireContext: __WebpackModuleApi.RequireContext) => {
-  console.log(requireContext.keys()[0]);
   return requireContext.keys().forEach(requireContext);
 };
 try {

@@ -2,7 +2,7 @@
   <div class="RecordDate">
     <div class="dateDisplay">
       <span>时间：</span>
-      <button @click="showCate">{{ this.yearIndex + 1900 }}-{{ this.monthIndex + 1 }}-{{ dayIndex }}</button>
+      <button @click="showCate">{{ this.yearIndex + 1900 }}-{{ this.monthIndex + 1 }}-{{ dayIndex+1 }}</button>
     </div>
     <div :class="{ wrap: true, showWrap: showCateFlag }">
       <div
@@ -80,7 +80,7 @@ export default class ReacordDate extends Vue {
     new Date().getMonth() + 1
   );
   dayDataSource: string[] = [];
-  dayIndex: number = new Date().getDate();
+  dayIndex: number = new Date().getDate() - 1;
   dayPosition: number = 3 - new Date().getDate();
 
   created() {
@@ -136,7 +136,7 @@ export default class ReacordDate extends Vue {
       "update:date",
       this.yearIndex + 1900,
       this.monthIndex + 1,
-      this.dayIndex
+      this.dayIndex + 1
     );
   }
 }

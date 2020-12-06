@@ -60,6 +60,7 @@ export default class SlideList extends Vue {
 
     if (transformY) {
       transformY = transformY.slice(0, -2);
+      console.log((100 - parseInt(transformY)) / 50);
       this.$emit("update:confirmIndex", (100 - parseInt(transformY)) / 50);
     }
   }
