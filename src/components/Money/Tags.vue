@@ -1,6 +1,14 @@
 <template>
   <div class="tags">
     <div class="showCateWrap">
+      <span>
+        <svg
+          class="icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-category"></use>
+        </svg>
+      </span>
       <span>分类：</span>
       <button @click="showCate">
         {{ this.dataSource[this.confirmIndex] || "分类" }}

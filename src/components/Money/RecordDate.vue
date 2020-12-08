@@ -1,6 +1,14 @@
 <template>
   <div class="RecordDate">
     <div class="dateDisplay">
+      <span>
+        <svg
+          class="icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-shijian"></use>
+        </svg>
+      </span>
       <span>时间：</span>
       <button @click="showCate">{{ this.yearIndex + 1900 }}-{{ this.monthIndex + 1 }}-{{ dayIndex+1 }}</button>
     </div>
@@ -148,8 +156,11 @@ export default class ReacordDate extends Vue {
   padding : 1em 0;
   text-align : left;
   line-height : 13px;
-  > span {
+  > span:first-child {
     padding-left : 46.5px;
+  }
+  & span:nth-child(2) {
+    padding-left : 5px;
   }
   > button {
     padding-left : 5px;

@@ -6,6 +6,14 @@
         @update:type="onUpdateType"
       />
       <div class="output">
+        <span>
+          <svg
+            class="icon"
+            aria-hidden="true"
+          >
+            <use xlink:href="#icon-shuzhi"></use>
+          </svg>
+        </span>
         <span>数值：</span>
         <span>
           {{ output }}
@@ -113,6 +121,10 @@ export default class Money extends Vue {
   & span:first-child {
     font-size : 16px;
     padding-left : 46.5px;
+  }
+
+  & span:nth-child(2) {
+    padding-left : 5px;
   }
 
   & span:last-child {

@@ -1,5 +1,13 @@
 <template>
   <div class="typeWrap">
+    <span>
+      <svg
+        class="icon"
+        aria-hidden="true"
+      >
+        <use xlink:href="#icon-type"></use>
+      </svg>
+    </span>
     <span>类型：</span>
     <div class="types">
       <button
@@ -33,6 +41,5 @@ export default class Types extends Vue {
 </script>
 
 <style scoped lang="scss">
-@import '~@/assets/css/Money/types.scss';
-
+@import "~@/assets/css/Money/types.scss";
 </style>

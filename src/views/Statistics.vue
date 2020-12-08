@@ -6,6 +6,14 @@
         @update:type="onUpdateType"
       />
       <div class="chooseMonth">
+        <span>
+          <svg
+            class="icon"
+            aria-hidden="true"
+          >
+            <use xlink:href="#icon-yuefen"></use>
+          </svg>
+        </span>
         <span>月份：</span>
         <button @click="lastMonth">
           <svg
@@ -216,8 +224,13 @@ export default class Statistics extends Vue {
   display : flex;
   justify-content : flex-start;
   margin : 1em 1em 3em;
-  > span {
+
+  > span:first-child {
     padding-left : 30.5px;
+  }
+
+  > span {
+    padding-left : 5px;
     line-height : 28px;
     vertical-align : middle;
   }

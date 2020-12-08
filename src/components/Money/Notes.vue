@@ -1,8 +1,20 @@
 <template>
   <div>
     <label class="notes">
+      <span>
+        <svg
+          class="icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-beizhu"></use>
+        </svg>
+      </span>
       <span class="name">备注：</span>
-      <input type="text" v-model="value" placeholder="在这里输入备注" />
+      <input
+        type="text"
+        v-model="value"
+        placeholder="在这里输入备注"
+      />
     </label>
   </div>
 </template>
@@ -22,5 +34,6 @@ export default class Notes extends Vue {
 </script>
 
 <style scoped lang="scss">
-@import "~@/assets/css/Money/notes.scss";
+@import '~@/assets/css/Money/notes.scss';
+
 </style>
